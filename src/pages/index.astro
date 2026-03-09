@@ -444,6 +444,9 @@ const videos = [
             </div>
             <div class="barcode"></div>
             <div style="font-family: var(--font-mono); font-size: 11px; margin-top: 10px; color: #888;">*** THANK YOU FOR READING ***</div>
+            <a href="/blog" class="see-more-btn">
+              SEE FULL MENU &rarr;
+            </a>
           </footer>
         </div>
       </div>
@@ -498,7 +501,7 @@ const videos = [
 
     <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
-      <div class="footer-inner reveal">
+      <div class="footer-inner">
         <div class="footer-logo">KIWI MADE</div>
         <p>Kyuhee Jo — Coder, Creator, Consultant</p>
         <div class="footer-links">
@@ -1086,6 +1089,30 @@ const videos = [
   .receipt-footer { margin-top: 30px; border-top: 2px dashed var(--seed-black); padding-top: 24px; text-align: center; }
   .total-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 24px; font-weight: 800; margin-bottom: 10px; }
   .barcode { width: 250px; height: 50px; background: repeating-linear-gradient(90deg, #000 0px, #000 2px, transparent 2px, transparent 4px, #000 4px, #000 5px, transparent 5px, transparent 8px); margin: 10px auto; }
+
+  .see-more-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 32px;
+    background: var(--kiwi-main);
+    color: #fff;
+    font-family: var(--font-logo);
+    font-size: 16px;
+    text-decoration: none;
+    border: 3px solid var(--seed-black);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px var(--seed-black);
+    transition: all 0.1s ease;
+    letter-spacing: 1px;
+  }
+  .see-more-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--seed-black);
+  }
+  .see-more-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px var(--seed-black);
+  }
 
   /* ==================== VIDEOS ==================== */
   .section-videos {
