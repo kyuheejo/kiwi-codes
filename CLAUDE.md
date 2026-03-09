@@ -124,12 +124,6 @@ Tone: confident but playful. Technical depth with approachable personality. The 
 - Two layout variants available (shelf view and deli menu/receipt view)
 - Default: Shelf view with pouch cards on wooden shelves
 - Each project pouch includes: blob icon, flavor badge, project title, mini nutrition label (stack facts), "VIEW RECIPE" button, tech badge circle
-- Real projects to display:
-  - **Supermark AI** — GenAI-enabled web bookmarks (Chrome Extension). PM. Shipped Jun 2023.
-  - **GuideDog** — ML-enabled app for visually impaired. PM. HopHacks 1st place.
-  - **Rail.ai** — AI medical image viewer. Founder.
-  - **Split.it** — Ridesharing cost pooling app. Fullstack dev. Shipped Jan 2022.
-  - **Joop** — 우리 동네 마감할인 플랫폼.
 - Price tags on shelf rails: "OPEN SOURCE FREE", "PRICED TO HIRE: $0.00"
 
 ### 5. Blog Section (`blog-post.html`)

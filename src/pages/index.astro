@@ -188,66 +188,97 @@ const videos = [
 
     <!-- ===== HERO ===== -->
     <section id="hero" class="hero-section">
-      <div class="pouch-hero">
-        <div class="panel-left">
-          <div class="badges-container">
-            <div class="badge">100%<br/>DEV</div>
-            <div class="badge" style="background:#fff; color:var(--kiwi-main);">JHU<br/>'23</div>
+      <div class="package-container">
+
+        <!-- FRONT PANEL -->
+        <section class="panel-front">
+          <div class="hero-badges-container">
+            <div class="hero-badge hero-badge-dev">100%<br/>DEV</div>
+            <div class="hero-badge hero-badge-vegan">JHU<br/>'23</div>
           </div>
-          <div class="brand-header">
-            <div class="logo-blob-container">
-              <svg class="logo-blob-svg" viewBox="0 0 280 320">
-                <defs>
-                  <path id="curve-top" d="M 40,100 A 100,100 0 0,1 240,100" />
-                  <path id="curve-bottom" d="M 50,230 A 110,110 0 0,0 230,230" />
-                </defs>
-                <path fill="var(--kiwi-main)" d="M140,20 C200,10 260,60 270,140 C280,220 220,290 140,300 C60,310 10,240 10,160 C10,80 80,30 140,20 Z" />
-                <text class="curved-text"><textPath href="#curve-top" startOffset="50%" text-anchor="middle">SOURCE OF CLEAN CODE</textPath></text>
-                <text x="140" y="155" text-anchor="middle" class="logo-text">KIWI</text>
-                <text x="140" y="200" text-anchor="middle" class="logo-text-sub">MADE</text>
-                <text class="curved-text" style="fill: var(--bg-color);"><textPath href="#curve-bottom" startOffset="50%" text-anchor="middle">WHOLEGRAIN DESIGN</textPath></text>
-              </svg>
+
+          <div class="portrait-brand">
+            <span class="brand-kiwi">KIWI</span>
+            <span class="brand-made">Kyuhee Jo</span>
+          </div>
+
+          <div class="portrait-photo">
+            <img src="/images/kyuhee-profile-transparent.png" alt="Kyuhee Jo" />
+          </div>
+
+          <div class="flavor-profile">
+            <h2 class="flavor-title">Ex-consultant<span>Coder &amp; CREATOR</span></h2>
+            <p class="flavor-desc">Tech meets business — shipping products, advising enterprises, and creating content. Freshly squeezed.</p>
+          </div>
+        </section>
+
+        <!-- BACK PANEL -->
+        <section class="panel-back">
+          <div class="ingredients-section">
+            <div class="ingredients-header">Ingredients</div>
+            <div class="ingredients-list">
+              PYTHON, JAVASCRIPT, JAVA, GO, REACT, NODE.JS, SQL, FIGMA, PRODUCT STRATEGY, GTM PLAYBOOKS, AI STRATEGY, DUE DILIGENCE, PREMIERE PRO, COFFEE (CAFFEINE), STACK OVERFLOW (TRACE).
+              <br/><br/>
+              <span class="allergy-advice">ALLERGY ADVICE:</span> MAY CONTAIN BUGS (SQUASHED), EXCESSIVE AMBITION, AND TRACE AMOUNTS OF STARTUP ENERGY.
             </div>
           </div>
-          <h2 class="flavor-text">CODER &amp; CREATOR<br/><span style="color: var(--kiwi-main); font-size: 32px;">CONSULTANT</span></h2>
-          <p class="flavor-desc">Tech meets business. Shipping products, advising enterprises, and creating content — freshly squeezed.</p>
-          <div class="net-wt">Net Wt. GPA 3.95 ℮</div>
-        </div>
-        <div class="panel-right">
-          <div class="nutrition-label">
-            <div class="nl-header">Identity Facts</div>
-            <div class="nl-row"><span>1 serving per portfolio</span></div>
-            <div class="nl-row thick" style="font-size: 16px;"><b>Serving size</b> <b>1 Kyuhee Jo</b></div>
-            <div class="nl-row thick" style="align-items: flex-end; padding-top: 8px;">
-              <span>Amount per serving<br/><b style="font-size: 26px;">Builder</b></span>
-              <b style="font-size: 26px;">100%</b>
+
+          <div class="nutrition-box">
+            <div class="nutri-title">Identity Facts</div>
+            <div class="nutri-row"><span>1 serving per portfolio</span></div>
+            <div class="nutri-row bold-border">
+              <strong>Serving size</strong>
+              <strong>1 Kyuhee Jo</strong>
             </div>
-            <div class="nl-row" style="justify-content: flex-end;"><b>% Daily Value*</b></div>
-
-            <div class="nl-row nl-category"><b>Dev</b> <span>80%</span></div>
-            <div class="nl-row nl-sub"><span>Python, JavaScript, Java, Go</span></div>
-            <div class="nl-row nl-sub"><span>React, Node.js, SQL</span></div>
-
-            <div class="nl-row nl-category"><b>GTM & Product</b> <span>90%</span></div>
-            <div class="nl-row nl-sub"><span>Product Strategy & Launches</span></div>
-            <div class="nl-row nl-sub"><span>Market Research & Positioning</span></div>
-
-            <div class="nl-row nl-category"><b>Consulting</b> <span>85%</span></div>
-            <div class="nl-row nl-sub"><span>AI & Digital Strategy</span></div>
-            <div class="nl-row nl-sub"><span>Due Diligence, Data Analysis</span></div>
-
-            <div class="nl-row nl-category"><b>Creator</b> <span>75%</span></div>
-            <div class="nl-row nl-sub"><span>Figma, Adobe Premiere</span></div>
-            <div class="nl-row nl-sub"><span>AI Video, Content Production</span></div>
-
-            <div style="font-size: 9px; margin-top: 8px; color: #666;">* Values based on years of caffeinated productivity.</div>
+            <div class="nutri-row medium-border" style="align-items: flex-end; padding-top: 10px;">
+              <span>Amount per serving<br/><strong class="nutri-huge">Builder</strong></span>
+              <strong class="nutri-huge">100%</strong>
+            </div>
+            <div class="daily-value-text">% Daily Value*</div>
+            <div class="nutri-row">
+              <strong>Dev (Python, JS, Java, Go)</strong>
+              <span>80%</span>
+            </div>
+            <div class="nutri-row indent">
+              <span>React, Node.js, SQL</span>
+              <span>75%</span>
+            </div>
+            <div class="nutri-row">
+              <strong>GTM &amp; Product Strategy</strong>
+              <span>90%</span>
+            </div>
+            <div class="nutri-row">
+              <strong>Consulting &amp; Strategy</strong>
+              <span>85%</span>
+            </div>
+            <div class="nutri-row bold-border">
+              <strong>Creator (Figma, Premiere)</strong>
+              <span>75%</span>
+            </div>
+            <div style="font-size: 9px; margin-top: 8px; color: #555; line-height: 1.3; font-weight: 600;">
+              * Based on years of caffeinated productivity. Your daily values may be higher or lower depending on sprint planning.
+            </div>
           </div>
-          <div class="ingredients">
-            <b>INGREDIENTS:</b> PYTHON, JAVASCRIPT, JAVA, GO, REACT, NODE.JS, SQL, FIGMA, PRODUCT STRATEGY, GTM PLAYBOOKS, MCKINSEY SLIDES, AI STRATEGY, DUE DILIGENCE, PREMIERE PRO, COFFEE (CAFFEINE).<br/><br/>
-            <b>ALLERGY ADVICE:</b> MAY CONTAIN BUGS (SQUASHED), EXCESSIVE AMBITION, AND TRACE AMOUNTS OF STARTUP ENERGY.
+
+          <div class="back-footer">
+            <div class="barcode-area">
+              <div class="hero-barcode">
+                <div class="bar bar-1"></div><div class="bar bar-2"></div><div class="bar bar-3"></div>
+                <div class="bar bar-4"></div><div class="bar bar-5"></div><div class="bar bar-6"></div>
+                <div class="bar bar-2"></div><div class="bar bar-1"></div><div class="bar bar-4"></div>
+                <div class="bar bar-7"></div><div class="bar bar-8"></div><div class="bar bar-9"></div>
+                <div class="bar bar-10"></div><div class="bar bar-2"></div><div class="bar bar-5"></div>
+                <div class="bar bar-1"></div><div class="bar bar-12"></div><div class="bar bar-3"></div>
+              </div>
+              <div class="barcode-text">08 920 481 293</div>
+            </div>
+            <div class="cta-wrapper">
+              <a href="mailto:kyuhee0622@gmail.com" class="btn-hire">CONTACT KYUHEE</a>
+              <div class="hero-net-weight">Net Wt. GPA 3.95 ℮</div>
+            </div>
           </div>
-          <a href="mailto:kyuhee0622@gmail.com" class="cta-btn">CONTACT KYUHEE</a>
-        </div>
+        </section>
+
       </div>
     </section>
 
@@ -543,26 +574,153 @@ const videos = [
   /* ==================== HERO ==================== */
   .hero-section {
     display: flex; justify-content: center; align-items: center;
-    min-height: 100vh; padding: 80px 20px 60px; position: relative; z-index: 10;
+    min-height: 100vh; padding: 80px 40px 60px; position: relative; z-index: 10;
     scroll-margin-top: 60px;
   }
-  .pouch-hero {
-    width: 960px; max-width: 100%; background-color: var(--pouch-bg); border-radius: 32px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.8);
-    display: flex; overflow: hidden;
+  .package-container {
+    position: relative; display: flex; width: 1100px; max-width: 100%;
+    height: 720px;
+    background-color: var(--pouch-bg); border-radius: 32px;
+    border: 4px solid var(--seed-black);
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.05), 16px 16px 0px rgba(42,31,26,0.15);
+    overflow: hidden;
   }
-  .panel-left { flex: 1; padding: 60px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 2px dashed rgba(0,0,0,0.1); position: relative; }
-  .panel-right { flex: 1; padding: 40px; display: flex; flex-direction: column; gap: 24px; background-color: rgba(255,255,255,0.3); }
-  .badges-container { position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 12px; }
-  .logo-blob-container { width: 320px; height: 360px; }
-  .logo-blob-svg { width: 100%; height: 100%; overflow: visible; }
-  .curved-text { font-family: var(--font-display); font-weight: 700; font-size: 13px; fill: var(--kiwi-dark); letter-spacing: 0.1em; text-transform: uppercase; }
-  .logo-text { font-family: var(--font-logo); fill: var(--seed-black); font-size: 72px; }
-  .logo-text-sub { font-family: var(--font-logo); fill: var(--seed-black); font-size: 46px; }
-  .flavor-text { font-family: var(--font-logo); color: var(--bg-color); font-size: 28px; text-align: center; transform: rotate(-2deg); margin: 20px 0 10px; text-shadow: 1px 1px 0px rgba(255,255,255,0.8); }
-  .flavor-desc { text-align: center; font-size: 14px; color: #7A7266; line-height: 1.5; max-width: 300px; }
-  .net-wt { position: absolute; bottom: 20px; left: 40px; font-family: var(--font-data); font-size: 14px; font-weight: 600; color: #7A7266; }
-  .ingredients { font-family: var(--font-data); font-size: 11px; line-height: 1.4; text-transform: uppercase; text-align: justify; color: #555; }
+
+  /* Front panel (green left side) */
+  .panel-front {
+    flex: 1.1; background-color: var(--kiwi-main); padding: 40px;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    position: relative; border-right: 4px dashed rgba(42,31,26,0.3);
+  }
+  .panel-front::before, .panel-front::after {
+    content: ''; position: absolute; right: -14px; width: 24px; height: 24px;
+    background-color: var(--bg-color); border: 4px solid var(--seed-black);
+    border-radius: 50%; z-index: 10;
+  }
+  .panel-front::before { top: -14px; }
+  .panel-front::after { bottom: -14px; }
+
+  .hero-badges-container { width: 100%; display: flex; justify-content: space-between; align-items: flex-start; }
+  .hero-badge {
+    width: 80px; height: 80px; border-radius: 50%; display: flex; justify-content: center;
+    align-items: center; font-family: var(--font-display); font-weight: 700; font-size: 16px;
+    line-height: 1.1; text-align: center; border: 4px solid var(--seed-black);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.2s ease;
+  }
+  .hero-badge:hover { transform: scale(1.05) rotate(5deg); }
+  .hero-badge-dev { background-color: var(--kiwi-light); color: var(--seed-black); transform: rotate(-10deg); }
+  .hero-badge-vegan { background-color: #fff; color: var(--kiwi-main); transform: rotate(8deg); }
+
+  /* Portrait brand text above medallion */
+  .portrait-brand {
+    display: flex; flex-direction: column; align-items: center;
+    line-height: 0.85;
+  }
+  .brand-kiwi {
+    font-family: var(--font-logo); font-size: 52px; color: var(--pouch-bg);
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+  }
+  .brand-made {
+    font-family: var(--font-logo); font-size: 34px; color: var(--bg-color);
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+  }
+
+  /* Portrait photo */
+  .portrait-photo {
+    width: 300px; height: 300px;
+    display: flex; align-items: flex-end; justify-content: center;
+    filter: drop-shadow(0px 8px 16px rgba(0,0,0,0.2));
+  }
+  .portrait-photo img {
+    width: 100%; height: 100%; object-fit: contain; display: block;
+  }
+
+  .flavor-profile {
+    text-align: center; background-color: var(--pouch-bg); padding: 16px 32px;
+    border-radius: 20px; border: 4px solid var(--seed-black); transform: rotate(-2deg);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+  }
+  .flavor-title {
+    font-family: var(--font-logo); font-size: 28px; line-height: 1.2;
+    color: var(--bg-color); margin-bottom: 8px;
+  }
+  .flavor-title span { color: var(--seed-black); font-size: 38px; display: block; }
+  .flavor-desc {
+    font-family: var(--font-display); font-weight: 600; font-size: 15px;
+    color: var(--kiwi-dark); max-width: 340px;
+  }
+
+  /* Back panel (right side) */
+  .panel-back {
+    flex: 0.9; padding: 40px; display: flex; flex-direction: column; gap: 28px;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .ingredients-section {
+    background-color: #fff; border: 3px solid var(--seed-black);
+    padding: 16px; border-radius: 12px; box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
+  }
+  .ingredients-header {
+    font-family: var(--font-display); font-weight: 800; font-size: 14px;
+    text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+  }
+  .ingredients-header::after { content: ''; flex: 1; height: 2px; background-color: var(--seed-black); }
+  .ingredients-list {
+    font-family: var(--font-data); font-size: 11px; line-height: 1.6;
+    text-transform: uppercase; color: #444; text-align: justify; font-weight: 600;
+  }
+  .allergy-advice {
+    display: inline-block; margin-top: 8px; background-color: var(--bg-color);
+    color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800;
+  }
+
+  .nutrition-box {
+    background-color: #fff; border: 4px solid var(--seed-black);
+    padding: 16px; font-family: var(--font-data); color: var(--seed-black); flex-grow: 1;
+  }
+  .nutri-title {
+    font-weight: 900; font-size: 32px; letter-spacing: -0.5px;
+    border-bottom: 10px solid var(--seed-black); padding-bottom: 4px; margin-bottom: 4px; line-height: 1;
+  }
+  .nutri-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--seed-black); padding: 5px 0; font-size: 14px;
+  }
+  .nutri-row.bold-border { border-bottom: 6px solid var(--seed-black); }
+  .nutri-row.medium-border { border-bottom: 3px solid var(--seed-black); }
+  .nutri-row.indent { padding-left: 16px; }
+  .nutri-row strong { font-weight: 800; }
+  .nutri-row span { font-weight: 600; }
+  .nutri-huge { font-size: 28px; font-weight: 900; }
+  .daily-value-text {
+    font-size: 12px; font-weight: 800; text-align: right;
+    padding: 4px 0; border-bottom: 1px solid var(--seed-black);
+  }
+
+  .back-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .barcode-area { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .hero-barcode { display: flex; height: 48px; gap: 2px; }
+  .bar { background-color: var(--seed-black); height: 100%; }
+  .bar-1 { width: 3px; } .bar-2 { width: 1px; } .bar-3 { width: 4px; }
+  .bar-4 { width: 2px; } .bar-5 { width: 5px; } .bar-6 { width: 2px; }
+  .bar-7 { width: 1px; } .bar-8 { width: 4px; } .bar-9 { width: 2px; }
+  .bar-10 { width: 3px; } .bar-12 { width: 4px; }
+  .barcode-text { font-family: var(--font-data); font-size: 10px; font-weight: 600; letter-spacing: 2px; }
+
+  .cta-wrapper { flex-grow: 1; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .btn-hire {
+    display: inline-block; width: 100%; background-color: var(--bg-color); color: #fff;
+    text-align: center; padding: 16px 20px; border-radius: 12px; font-family: var(--font-logo);
+    font-size: 20px; text-decoration: none; border: 4px solid var(--seed-black);
+    box-shadow: 6px 6px 0px var(--seed-black); transition: all 0.1s ease;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .btn-hire:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--seed-black); }
+  .btn-hire:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0px var(--seed-black); }
+  .hero-net-weight { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--seed-black); opacity: 0.6; }
 
   /* ==================== EXPERIENCE ==================== */
   .section-experience {
@@ -730,12 +888,16 @@ const videos = [
   /* ==================== MOBILE ==================== */
   @media (max-width: 768px) {
     .hero-section { padding: 80px 16px 40px; }
-    .pouch-hero { flex-direction: column; border-radius: 24px; }
-    .panel-left { border-right: none; border-bottom: 2px dashed rgba(0,0,0,0.1); padding: 40px 20px; }
-    .panel-right { padding: 24px 20px; }
-    .logo-blob-container { width: 220px; height: 260px; }
-    .flavor-text { font-size: 22px; }
-    .badges-container { top: 12px; left: 12px; }
+    .package-container { flex-direction: column; border-radius: 24px; height: auto; }
+    .panel-front { border-right: none; border-bottom: 4px dashed rgba(42,31,26,0.3); padding: 30px 20px; }
+    .panel-front::before, .panel-front::after { display: none; }
+    .panel-back { padding: 30px 20px; }
+    .portrait-photo { width: 200px; height: 200px; }
+    .brand-kiwi { font-size: 36px; }
+    .brand-made { font-size: 24px; }
+    .hero-badge { width: 60px; height: 60px; font-size: 13px; }
+    .flavor-title { font-size: 22px; }
+    .flavor-title span { font-size: 30px; }
     .section-inner { padding: 0 16px; }
     .section-title { font-size: 32px; }
     .header-strip { flex-direction: column; font-size: 20px; gap: 8px; text-align: center; padding: 12px 20px; }
