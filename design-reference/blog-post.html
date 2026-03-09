@@ -1,0 +1,359 @@
+<html lang="en" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Kiwi Made - Deli Menu Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&amp;family=JetBrains+Mono:wght@400;700;800&amp;family=Titan+One&amp;display=swap" rel="stylesheet" vid="7">
+    
+    <style vid="8">
+        :root {
+            --bg-color: #E87A35; 
+            --paper-bg: #F4EBE1; 
+            --kiwi-main: #6CA632; 
+            --seed-black: #2A1F1A; 
+            --accent-yellow: #F2C12E; 
+            --ink-red: #d32f2f;
+            --font-logo: 'Titan One', cursive;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-mono);
+            color: var(--seed-black);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .aisle-container {
+            width: 1440px;
+            height: 960px;
+            background: linear-gradient(180deg, #E87A35 0%, #D66C2B 100%);
+            display: flex;
+            padding: 40px;
+            gap: 30px;
+            position: relative;
+        }
+
+        
+        .aisle-sidebar {
+            width: 280px;
+            background: var(--seed-black);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 4px solid #444;
+        }
+
+        .aisle-label {
+            color: var(--accent-yellow);
+            font-family: var(--font-logo);
+            font-size: 24px;
+            border-bottom: 2px dashed #555;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-item {
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-transform: uppercase;
+        }
+
+        .sidebar-item.active {
+            background: var(--kiwi-main);
+            color: #fff;
+        }
+
+        
+        .receipt-board {
+            flex: 1;
+            background-color: var(--paper-bg);
+            border-radius: 4px;
+            box-shadow: 5px 15px 40px rgba(0,0,0,0.2), inset 0 0 100px rgba(0,0,0,0.05);
+            padding: 60px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .receipt-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background-image: radial-gradient(circle, transparent 70%, var(--bg-color) 70%);
+            background-size: 30px 30px;
+            background-position: 0 -15px;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--seed-black);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        .receipt-logo {
+            font-family: var(--font-logo);
+            font-size: 48px;
+            color: var(--seed-black);
+            letter-spacing: -1px;
+        }
+
+        .receipt-sub {
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        
+        .menu-section-title {
+            font-weight: 800;
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding: 4px 10px;
+            background: var(--seed-black);
+            color: #fff;
+            display: inline-block;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted #ccc;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: rgba(108, 166, 50, 0.1);
+        }
+
+        .item-main {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-name-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-name {
+            font-weight: 800;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+
+        .item-flavor {
+            font-size: 14px;
+            color: var(--ink-red);
+            font-style: italic;
+        }
+
+        .item-tech-stack {
+            font-size: 13px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .item-price {
+            font-weight: 800;
+            font-size: 22px;
+        }
+
+        .item-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        
+        .receipt-footer {
+            margin-top: auto;
+            border-top: 2px dashed var(--seed-black);
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        .barcode {
+            width: 300px;
+            height: 60px;
+            background: repeating-linear-gradient(90deg, #000 0px, #000 2px, transparent 2px, transparent 4px, #000 4px, #000 5px, transparent 5px, transparent 8px);
+            margin: 10px auto;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .bg-deco {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body vid="9">
+    <div class="aisle-container" vid="10">
+        
+        <aside class="aisle-sidebar" vid="11">
+            <div class="aisle-label" vid="12">AISLE DIRECTORY</div>
+            <div class="sidebar-item" vid="13">01 BAKERY (HTML)</div>
+            <div class="sidebar-item" vid="14">02 PRODUCE (UI/UX)</div>
+            <div class="sidebar-item" vid="15">03 DAIRY (BACKEND)</div>
+            <div class="sidebar-item active" vid="16">04 WEB PROJECTS</div>
+            <div class="sidebar-item" vid="17">05 FROZEN (LEGACY)</div>
+            <div style="flex:1" vid="18"></div>
+            <div class="price-tag" style="background: var(--accent-yellow); border: 2px solid #fff; padding: 10px; color: var(--seed-black); font-size: 12px; text-align: center;" vid="19">
+                TODAY'S SPECIAL:<br vid="20">HIRE ONE GET ONE FREE
+            </div>
+        </aside>
+
+        <main class="receipt-board" vid="21">
+            <header class="receipt-header" vid="22">
+                <h1 class="receipt-logo" vid="23">KIWI MADE DELI</h1>
+                <div class="receipt-sub" vid="24">EST. 2024 • ORDER #98-LIGHTHOUSE</div>
+                <div style="font-size: 12px; margin-top: 10px;" vid="25">123 DEVELOPER LANE, PORTFOLIO CITY</div>
+            </header>
+
+            <div class="menu-section-title" vid="26">FRESH PROJECTS</div>
+
+            
+            <div class="menu-item" vid="27">
+                <div class="item-main" vid="28">
+                    <div class="item-name-row" vid="29">
+                        <span class="item-name" vid="30">FRESH CART</span>
+                        <span class="item-flavor" vid="31">Zesty Checkout</span>
+                    </div>
+                    <div class="item-tech-stack" vid="32">STACK: REACT (100%), REDUX TOOLKIT, LIGHTHOUSE OPTIMIZED</div>
+                    <div class="item-stats" vid="33">
+                        <span vid="34">COMPONENTS: 42 PURE</span>
+                        <span vid="35">PERF: 98 GRADE</span>
+                    </div>
+                </div>
+                <div class="item-price" vid="36">$0.00</div>
+            </div>
+
+            
+            <div class="menu-item" vid="37">
+                <div class="item-main" vid="38">
+                    <div class="item-name-row" vid="39">
+                        <span class="item-name" vid="40">VITAL STATS</span>
+                        <span class="item-flavor" vid="41">Crispy Data</span>
+                    </div>
+                    <div class="item-tech-stack" vid="42">STACK: D3.JS (85%), SVG/CANVAS, REAL-TIME INSIGHTS</div>
+                    <div class="item-stats" vid="43">
+                        <span vid="44">VITAMIN: INSIGHTS B12</span>
+                        <span vid="45">PULSE: HIGH</span>
+                    </div>
+                </div>
+                <div class="item-price" vid="46">$0.00</div>
+            </div>
+
+            
+            <div class="menu-item" vid="47">
+                <div class="item-main" vid="48">
+                    <div class="item-name-row" vid="49">
+                        <span class="item-name" vid="50">JUICY CHAT</span>
+                        <span class="item-flavor" vid="51">Sweet Connect</span>
+                    </div>
+                    <div class="item-tech-stack" vid="52">STACK: VUE 3 (92%), WEBSOCKETS, ORGANIC JWT SECURITY</div>
+                    <div class="item-stats" vid="53">
+                        <span vid="54">FLAVOR: ULTRA SMOOTH</span>
+                        <span vid="55">STATUS: READY</span>
+                    </div>
+                </div>
+                <div class="item-price" vid="56">$0.00</div>
+            </div>
+
+            
+            <div class="menu-item" vid="57">
+                <div class="item-main" vid="58">
+                    <div class="item-name-row" vid="59">
+                        <span class="item-name" vid="60">PEEL DESIGN</span>
+                        <span class="item-flavor" vid="61">Tangy UI Kit</span>
+                    </div>
+                    <div class="item-tech-stack" vid="62">STACK: CSS (100%), CUSTOM VARIABLES, A++ ACCESSIBILITY</div>
+                    <div class="item-stats" vid="63">
+                        <span vid="64">SUGARS: NATURAL</span>
+                        <span vid="65">GRADE: ORGANIC</span>
+                    </div>
+                </div>
+                <div class="item-price" vid="66">$0.00</div>
+            </div>
+
+            
+            <div class="menu-item" vid="67">
+                <div class="item-main" vid="68">
+                    <div class="item-name-row" vid="69">
+                        <span class="item-name" vid="70">KINETIC KIWI</span>
+                        <span class="item-flavor" vid="71">Bouncy Motion</span>
+                    </div>
+                    <div class="item-tech-stack" vid="72">STACK: GSAP (99%), 60FPS ANIMATION, SHELF-STABLE CODE</div>
+                    <div class="item-stats" vid="73">
+                        <span vid="74">WEIGHT: 2KB COMPRESSED</span>
+                        <span vid="75">TYPE: LIMITED EDITION</span>
+                    </div>
+                </div>
+                <div class="item-price" vid="76">$0.00</div>
+            </div>
+
+            <footer class="receipt-footer" vid="77">
+                <div class="total-row" vid="78">
+                    <span vid="79">TOTAL VALUE</span>
+                    <span vid="80">PRICELESS</span>
+                </div>
+                <div class="total-row" style="font-size: 16px; margin-bottom: 20px;" vid="81">
+                    <span vid="82">AMOUNT DUE</span>
+                    <span vid="83" style="color: var(--ink-red);">$0.00</span>
+                </div>
+                <div class="barcode" vid="84"></div>
+                <div style="font-size: 11px; margin-top: 10px;" vid="85">*** THANK YOU FOR VISITING AISLE 4 ***</div>
+            </footer>
+        </main>
+
+        
+        <svg class="bg-deco" style="top: 100px; right: -50px; width: 300px; height: 300px; transform: rotate(-20deg);" vid="86">
+            <circle cx="150" cy="150" r="100" fill="var(--kiwi-light)" vid="87"></circle>
+            <circle cx="150" cy="150" r="40" fill="#F4EBE1" vid="88"></circle>
+        </svg>
+    </div>
+
+
+</body></html>

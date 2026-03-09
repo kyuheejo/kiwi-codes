@@ -1,0 +1,301 @@
+<html lang="en" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Kiwi - Experience Timeline</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Inter:wght@400;600;800;900&amp;family=Titan+One&amp;display=swap" rel="stylesheet" vid="7">
+    
+    <style vid="8">
+        :root {
+            --bg-color: #E87A35; 
+            --pouch-bg: #F4EBE1; 
+            --kiwi-main: #6CA632; 
+            --kiwi-light: #9BD94E; 
+            --kiwi-dark: #4A7320; 
+            --seed-black: #2A1F1A; 
+            --accent-yellow: #F2C12E; 
+            --font-logo: 'Titan One', cursive;
+            --font-display: 'Fredoka', sans-serif;
+            --font-data: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-display);
+            color: var(--seed-black);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .floating-element { position: absolute; }
+        .vector-line { fill: none; stroke: var(--seed-black); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+        .timeline-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            padding: 60px 80px;
+            gap: 40px;
+            overflow-x: auto;
+            align-items: flex-start;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        
+        .serving-panel {
+            flex: 0 0 400px;
+            background-color: var(--pouch-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            border: 2px solid rgba(0,0,0,0.05);
+        }
+
+        
+        .serving-panel:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -42px;
+            width: 44px;
+            height: 12px;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(0,0,0,0.1) 0px,
+                rgba(0,0,0,0.1) 2px,
+                transparent 2px,
+                transparent 6px
+            );
+            z-index: -1;
+        }
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .company-name {
+            font-family: var(--font-logo);
+            color: var(--kiwi-main);
+            font-size: 28px;
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .duration {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: #7A7266;
+            font-weight: 600;
+        }
+
+        .nutrition-label {
+            background-color: #fff;
+            border: 3px solid var(--seed-black);
+            padding: 12px;
+            font-family: var(--font-data);
+            color: var(--seed-black);
+        }
+
+        .nl-header {
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: -1px;
+            border-bottom: 8px solid var(--seed-black);
+            margin-bottom: 4px;
+        }
+
+        .nl-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--seed-black);
+            padding: 5px 0;
+            font-size: 12px;
+        }
+
+        .nl-row.thick { border-bottom: 4px solid var(--seed-black); }
+        .nl-row b { font-weight: 800; }
+        .nl-row .dv { font-weight: 800; }
+
+        .experience-intro {
+            padding: 40px 80px 0;
+            z-index: 10;
+            position: relative;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-family: var(--font-logo);
+            font-size: 18px;
+            margin-bottom: 20px;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+        .back-nav:hover { transform: translateX(-5px); }
+
+        .page-title {
+            font-family: var(--font-logo);
+            color: white;
+            font-size: 48px;
+            text-shadow: 3px 3px 0 var(--seed-black);
+        }
+
+        .footer-info {
+            position: fixed;
+            bottom: 20px;
+            right: 40px;
+            font-family: var(--font-data);
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            z-index: 20;
+        }
+
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .pos-1 { top: 10%; left: 5%; animation: float 6s ease-in-out infinite; opacity: 0.4; }
+        .pos-2 { bottom: 10%; right: 10%; animation: float 8s ease-in-out infinite; opacity: 0.4; }
+
+        
+        .timeline-container::-webkit-scrollbar { height: 12px; }
+        .timeline-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+        .timeline-container::-webkit-scrollbar-thumb { 
+            background: var(--kiwi-light); 
+            border-radius: 6px; 
+            border: 3px solid var(--bg-color);
+        }
+    </style>
+</head>
+<body vid="9">
+    <div class="canvas-container" vid="10">
+        <svg class="floating-element pos-1" width="200" height="200" viewBox="0 0 200 200" vid="11">
+            <path class="vector-line" d="M100,190 C50.294,190 10,149.706 10,100 C10,50.294 50.294,10 100,10 C149.706,10 190,50.294 190,100 C190,149.706 149.706,190 100,190 Z" vid="12"></path>
+            <path fill="var(--kiwi-light)" d="M100,180 C55.817,180 20,144.183 20,100 C20,55.817 55.817,20 100,20 C144.183,20 180,55.817 180,100 C180,144.183 144.183,180 100,180 Z" vid="13"></path>
+        </svg>
+        <svg class="floating-element pos-2" width="160" height="140" viewBox="0 0 160 140" vid="14">
+            <path fill="var(--accent-yellow)" d="M150,70 C150,110 110,130 70,130 C20,130 10,90 10,50 C10,10 60,10 100,10 C140,10 150,30 150,70 Z" vid="15"></path>
+        </svg>
+    </div>
+
+    <header class="experience-intro" vid="16">
+        <a href="#" class="back-nav" vid="17">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" vid="18"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" vid="19"></path></svg>
+            BACK TO PACK
+        </a>
+        <h1 class="page-title" vid="20">EXPERIENCE TIMELINE</h1>
+    </header>
+
+    <main class="timeline-container" vid="21">
+        
+        <div class="serving-panel" vid="22">
+            <div class="panel-header" vid="23">
+                <h3 class="company-name" vid="24">VIBRANT TECH</h3>
+                <p class="duration" vid="25">2022 — PRESENT</p>
+            </div>
+            <section class="nutrition-label" vid="26">
+                <div class="nl-header" vid="27">Job Role Facts</div>
+                <div class="nl-row" vid="28"><span vid="29">1 position per career</span></div>
+                <div class="nl-row thick" vid="30"><b vid="31">Serving size</b> <b vid="32">Senior Front-End</b></div>
+                <div class="nl-row thick" vid="33"><span vid="34">Impact per year<br vid="35"><b style="font-size: 20px;" vid="36">Innovation</b></span><b style="font-size: 20px;" vid="37">100%</b></div>
+                <div class="nl-row" style="justify-content: flex-end;" vid="38"><b vid="39">% Daily Contribution*</b></div>
+                <div class="nl-row" vid="40"><span vid="41"><b vid="42">Design Systems</b> (Atomic Design)</span><span class="dv" vid="43">98%</span></div>
+                <div class="nl-row" vid="44"><span vid="45"><b vid="46">React Architecture</b> (Performance)</span><span class="dv" vid="47">92%</span></div>
+                <div class="nl-row" vid="48"><span vid="49"><b vid="50">Mentorship</b> (Junior Training)</span><span class="dv" vid="51">85%</span></div>
+                <div class="nl-row thick" vid="52"><span vid="53"><b vid="54">Project Lead</b> (SaaS Launch)</span><span class="dv" vid="55">100%</span></div>
+                <div style="font-size: 8px; margin-top: 8px; line-height: 1.1; color: #666;" vid="56">* Contribution based on 8 standard cups of coffee and 10 successful PR merges per week.</div>
+            </section>
+        </div>
+
+        
+        <div class="serving-panel" vid="57">
+            <div class="panel-header" vid="58">
+                <h3 class="company-name" vid="59">GREEN PIXEL CO.</h3>
+                <p class="duration" vid="60">2019 — 2022</p>
+            </div>
+            <section class="nutrition-label" vid="61">
+                <div class="nl-header" vid="62">Job Role Facts</div>
+                <div class="nl-row" vid="63"><span vid="64">1 position per career</span></div>
+                <div class="nl-row thick" vid="65"><b vid="66">Serving size</b> <b vid="67">UI Developer</b></div>
+                <div class="nl-row thick" vid="68"><span vid="69">Impact per year<br vid="70"><b style="font-size: 20px;" vid="71">Visuals</b></span><b style="font-size: 20px;" vid="72">95%</b></div>
+                <div class="nl-row" style="justify-content: flex-end;" vid="73"><b vid="74">% Daily Contribution*</b></div>
+                <div class="nl-row" vid="75"><span vid="76"><b vid="77">Animation</b> (SVG/GSAP)</span><span class="dv" vid="78">100%</span></div>
+                <div class="nl-row" vid="79"><span vid="80"><b vid="81">Prototyping</b> (High Fidelity)</span><span class="dv" vid="82">90%</span></div>
+                <div class="nl-row" vid="83"><span vid="84"><b vid="85">Accessibility</b> (WCAG AA)</span><span class="dv" vid="86">88%</span></div>
+                <div class="nl-row thick" vid="87"><span vid="88"><b vid="89">Responsive Design</b></span><span class="dv" vid="90">95%</span></div>
+                <div style="font-size: 8px; margin-top: 8px; line-height: 1.1; color: #666;" vid="91">* Values may vary depending on team velocity and amount of dark mode requests.</div>
+            </section>
+        </div>
+
+        
+        <div class="serving-panel" vid="92">
+            <div class="panel-header" vid="93">
+                <h3 class="company-name" vid="94">JUICY STUDIO</h3>
+                <p class="duration" vid="95">2017 — 2019</p>
+            </div>
+            <section class="nutrition-label" vid="96">
+                <div class="nl-header" vid="97">Job Role Facts</div>
+                <div class="nl-row" vid="98"><span vid="99">1 position per career</span></div>
+                <div class="nl-row thick" vid="100"><b vid="101">Serving size</b> <b vid="102">Junior Designer</b></div>
+                <div class="nl-row thick" vid="103"><span vid="104">Impact per year<br vid="105"><b style="font-size: 20px;" vid="106">Learning</b></span><b style="font-size: 20px;" vid="107">80%</b></div>
+                <div class="nl-row" style="justify-content: flex-end;" vid="108"><b vid="109">% Daily Contribution*</b></div>
+                <div class="nl-row" vid="110"><span vid="111"><b vid="112">Vector Asset Creation</b></span><span class="dv" vid="113">100%</span></div>
+                <div class="nl-row" vid="114"><span vid="115"><b vid="116">HTML/CSS Coding</b></span><span class="dv" vid="117">75%</span></div>
+                <div class="nl-row" vid="118"><span vid="119"><b vid="120">Client Interaction</b></span><span class="dv" vid="121">40%</span></div>
+                <div class="nl-row thick" vid="122"><span vid="123"><b vid="124">Brand Identity</b></span><span class="dv" vid="125">60%</span></div>
+                <div style="font-size: 8px; margin-top: 8px; line-height: 1.1; color: #666;" vid="126">* Freshly squeezed talent. Contains no artificial preservatives.</div>
+            </section>
+        </div>
+
+        
+        <div class="serving-panel" vid="127">
+            <div class="panel-header" vid="128">
+                <h3 class="company-name" vid="129">CREATIVE UNI</h3>
+                <p class="duration" vid="130">2013 — 2017</p>
+            </div>
+            <section class="nutrition-label" vid="131">
+                <div class="nl-header" vid="132">Academic Facts</div>
+                <div class="nl-row" vid="133"><span vid="134">1 degree per person</span></div>
+                <div class="nl-row thick" vid="135"><b vid="136">Serving size</b> <b vid="137">BSc Design</b></div>
+                <div class="nl-row thick" vid="138"><span vid="139">Impact per year<br vid="140"><b style="font-size: 20px;" vid="141">Foundation</b></span><b style="font-size: 20px;" vid="142">100%</b></div>
+                <div class="nl-row" style="justify-content: flex-end;" vid="143"><b vid="144">% Daily Effort*</b></div>
+                <div class="nl-row" vid="145"><span vid="146"><b vid="147">Graphic Principles</b></span><span class="dv" vid="148">100%</span></div>
+                <div class="nl-row" vid="149"><span vid="150"><b vid="151">Typography</b></span><span class="dv" vid="152">90%</span></div>
+                <div class="nl-row" vid="153"><span vid="154"><b vid="155">Art History</b></span><span class="dv" vid="156">65%</span></div>
+                <div class="nl-row thick" vid="157"><span vid="158"><b vid="159">Late Night Studying</b></span><span class="dv" vid="160">120%</span></div>
+                <div style="font-size: 8px; margin-top: 8px; line-height: 1.1; color: #666;" vid="161">* Percent Daily Values are based on a diet of ramen and library sessions.</div>
+            </section>
+        </div>
+    </main>
+
+    <div class="footer-info" vid="162">SCROLL HORIZONTALLY TO DISCOVER THE FULL HARVEST</div>
+
+</body></html>
