@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const date = new Date(post.data.date);
+const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={`${post.data.title} — Kiwi Made`} description={post.data.description}>
+  <Navigation />
+
+  <div class="post-page">
+    <main class="receipt-post">
+      <div class="receipt-tear"></div>
+
+      <header class="post-header">
+        <a href="/blog" class="back-link">&larr; BACK TO MENU</a>
+        <h1 class="post-title">{post.data.title}</h1>
+        <div class="post-meta">
+          <span>{dateStr}</span>
+          <span>&bull;</span>
+          <span>{post.data.tags.join(', ')}</span>
+        </div>
+        <div class="post-divider"></div>
+      </header>
+
+      <article class="post-content">
+        <Content />
+      </article>
+
+      <footer class="post-footer">
+        <div class="post-divider"></div>
+        <div class="barcode"></div>
+        <div class="footer-text">*** THANK YOU FOR READING ***</div>
+        <a href="/blog" class="cta-btn" style="margin-top: 20px; max-width: 300px; margin-left: auto; margin-right: auto;">BACK TO DELI MENU</a>
+      </footer>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .post-page {
+    padding: 80px 20px 40px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  .receipt-post {
+    max-width: 760px;
+    width: 100%;
+    background-color: var(--pouch-bg);
+    border-radius: 4px;
+    box-shadow: 5px 15px 40px rgba(0,0,0,0.2), inset 0 0 100px rgba(0,0,0,0.05);
+    padding: 60px;
+    position: relative;
+  }
+
+  .receipt-tear {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 15px;
+    background-image: radial-gradient(circle, transparent 70%, var(--bg-color) 70%);
+    background-size: 30px 30px;
+    background-position: 0 -15px;
+  }
+
+  .post-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--kiwi-main);
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+  }
+
+  .back-link:hover {
+    transform: translateX(-5px);
+  }
+
+  .post-title {
+    font-family: var(--font-logo);
+    font-size: 36px;
+    color: var(--seed-black);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .post-meta {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #888;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .post-divider {
+    border-top: 2px dashed var(--seed-black);
+    margin: 24px 0;
+  }
+
+  .post-content {
+    font-family: var(--font-data);
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--seed-black);
+  }
+
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3) {
+    font-family: var(--font-display);
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  .post-content :global(h1) { font-size: 28px; }
+  .post-content :global(h2) { font-size: 22px; }
+  .post-content :global(h3) { font-size: 18px; }
+
+  .post-content :global(p) {
+    margin-bottom: 16px;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .post-content :global(code) {
+    font-family: var(--font-mono);
+    background: rgba(0,0,0,0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 4px solid var(--kiwi-main);
+    padding-left: 16px;
+    margin: 20px 0;
+    color: #555;
+    font-style: italic;
+  }
+
+  .post-content :global(strong) {
+    font-weight: 800;
+  }
+
+  .post-content :global(em) {
+    color: #666;
+  }
+
+  .post-footer {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .barcode {
+    width: 200px;
+    height: 40px;
+    background: repeating-linear-gradient(90deg, #000 0px, #000 2px, transparent 2px, transparent 4px, #000 4px, #000 5px, transparent 5px, transparent 8px);
+    margin: 10px auto;
+  }
+
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #888;
+  }
+
+  @media (max-width: 768px) {
+    .receipt-post {
+      padding: 40px 20px;
+    }
+
+    .post-title {
+      font-size: 26px;
+    }
+  }
+</style>

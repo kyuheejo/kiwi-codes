@@ -1,0 +1,180 @@
+---
+const links = [
+  { href: '#hero', label: 'Ingredients' },
+  { href: '#experience', label: 'Flavors' },
+  { href: '#projects', label: 'Squeeze Me' },
+  { href: '#blog', label: 'Recipes' },
+  { href: '#videos', label: 'Frozen Aisle' },
+];
+---
+
+<nav class="site-nav" id="site-nav">
+  <div class="nav-pill">
+    {links.map(link => (
+      <a href={link.href} class="nav-link">{link.label}</a>
+    ))}
+  </div>
+  <button class="nav-toggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<style>
+  .site-nav {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-120px);
+    z-index: 100;
+    transition: transform 0.4s ease;
+  }
+
+  .site-nav.visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 3.5px solid var(--seed-black);
+    border-radius: 999px;
+    padding: 5px 6px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--seed-black);
+    padding: 10px 24px;
+    border-radius: 999px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    background: rgba(155, 217, 78, 0.3);
+  }
+
+  .nav-link.active {
+    background: var(--kiwi-light);
+    color: var(--seed-black);
+  }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: #fff;
+    border: 3px solid var(--seed-black);
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2.5px;
+    background: var(--seed-black);
+    border-radius: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .site-nav {
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      transform: translateX(0) translateY(-120px);
+    }
+
+    .site-nav.visible {
+      transform: translateX(0) translateY(0);
+    }
+
+    .nav-pill {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+
+    .site-nav.open .nav-pill {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      border-radius: 20px;
+      padding: 8px;
+    }
+
+    .site-nav.open .nav-link {
+      width: 100%;
+      text-align: center;
+      padding: 12px 20px;
+    }
+
+    .site-nav.open .nav-toggle {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+</style>
+
+<script>
+  // Mobile toggle
+  document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+    document.querySelector('.site-nav')?.classList.toggle('open');
+  });
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.site-nav')?.classList.remove('open');
+    });
+  });
+
+  // Show nav after splash hides
+  const nav = document.getElementById('site-nav');
+  const splash = document.getElementById('splash');
+  if (splash) {
+    const observer = new MutationObserver(() => {
+      if (splash.classList.contains('hidden')) {
+        nav?.classList.add('visible');
+        observer.disconnect();
+      }
+    });
+    observer.observe(splash, { attributes: true, attributeFilter: ['class'] });
+  } else {
+    nav?.classList.add('visible');
+  }
+
+  // Active section highlighting on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const highlightNav = () => {
+    let current = '';
+    sections.forEach(section => {
+      const el = section as HTMLElement;
+      if (window.scrollY >= el.offsetTop - 120) {
+        current = el.getAttribute('id') || '';
+      }
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+    });
+  };
+
+  window.addEventListener('scroll', highlightNav, { passive: true });
+  highlightNav();
+</script>
