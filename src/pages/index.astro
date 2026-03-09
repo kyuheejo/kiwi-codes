@@ -146,9 +146,12 @@ const projects = [
 ];
 
 const videos = [
-  { title: 'AI Video Creation Demo', description: 'Exploring the latest AI video generation tools and techniques.', date: '2024' },
-  { title: 'Tech & Product Thoughts', description: 'Sharing insights on building products at the intersection of tech and business.', date: '2024' },
-  { title: 'Startup Life in Korea', description: 'Behind the scenes of building at Trillion Labs and the Korean tech ecosystem.', date: '2025' },
+  { title: 'Cortis - Fashion (Animated)', ch: '01', videoId: 'XKXIzKCDQLs' },
+  { title: 'Gnarly in DC Comics (AI)', ch: '02', videoId: 'Znf-Q2t53VM' },
+  { title: 'Jennie - Love Hangover', ch: '03', videoId: 'V0DUnfDU8lg' },
+  { title: 'EXO Teaser Rotoscoped', ch: '04', videoId: '2aKS661TScM' },
+  { title: 'Hackweek 25 Sponge', ch: '05', videoId: 'GNvdu9AvLuI' },
+  { title: 'Supermark Demo', ch: '06', videoId: 'bWkILFzM0JE' },
 ];
 ---
 
@@ -290,7 +293,7 @@ const videos = [
             </div>
             <div class="cta-wrapper">
               <a href="mailto:kyuhee0622@gmail.com" class="btn-hire">CONTACT KYUHEE</a>
-              <div class="hero-net-weight">Net Wt. GPA 3.95 ℮</div>
+              <div class="hero-net-weight">Net Wt. 25 y.o. ℮</div>
             </div>
           </div>
         </section>
@@ -303,11 +306,11 @@ const videos = [
       <div class="section-inner">
         <h2 class="section-title reveal">EXPERIENCE</h2>
         <div class="timeline-scroll">
-          {jobs.map((job) => (
-            <div class="serving-panel reveal-scale">
+          {jobs.map((job, i) => (
+            <div class={`serving-panel${i < 3 ? ' reveal-scale' : ''}`}>
               <div class="panel-header">
                 <h3 class="company-name">
-                  <img src={job.logo} alt={job.company} class="company-logo" />
+                  <img src={job.logo} alt={job.company} class="company-logo" width="24" height="24" loading="lazy" decoding="async" />
                   {job.company}
                 </h3>
                 <p class="duration">{job.period}</p>
@@ -315,7 +318,7 @@ const videos = [
               <div class="photo-label">
                 <div class="photo-label-header">Photo from this era</div>
                 <div class="photo-frame">
-                  <img src={job.photo} alt={`Kyuhee at ${job.company}`} />
+                  <img src={job.photo} alt={`Kyuhee at ${job.company}`} width="800" height="600" loading="lazy" decoding="async" />
                 </div>
               </div>
               <div class="nutrition-label nl-compact">
@@ -419,7 +422,7 @@ const videos = [
 
           <div class="menu-section-title">FRESH POSTS</div>
 
-          {posts.map((post) => {
+          {posts.slice(0, 3).map((post) => {
             const date = new Date(post.data.date);
             const dateStr = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             return (
@@ -452,41 +455,152 @@ const videos = [
       </div>
     </section>
 
-    <!-- ===== VIDEOS ===== -->
+    <!-- ===== VIDEOS / DELI TV ===== -->
     <section id="videos" class="section-videos">
       <div class="section-inner">
+
         <div class="header-strip reveal">
-          <span>Creative exploration</span>
-          <span class="header-strip-sub">FRESHLY BLENDED</span>
+          <span>Deli TV</span>
+          <span class="header-strip-sub">NOW SHOWING</span>
         </div>
 
+        <div class="deli-tv-wrapper reveal-scale">
 
-        <div class="video-grid">
-          {videos.map((video) => (
-            <a href="https://www.youtube.com/@kpopreaction" target="_blank" rel="noopener" class="juice-box reveal-scale">
-              <div class="juice-box-top">
-                <div class="play-circle">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-                </div>
-                <div class="juice-box-straw"></div>
+          <!-- The TV area (TV + shelf + stickers) -->
+          <div class="tv-area">
+            <!-- Wall stickers -->
+            <div class="wall-sticker sticker-1" aria-hidden="true">FRESH!</div>
+            <div class="wall-sticker sticker-2" aria-hidden="true">NEW</div>
+
+            <!-- The TV Set -->
+            <div class="tv-set">
+              <!-- Antenna -->
+              <div class="tv-antenna">
+                <div class="antenna-rod left"></div>
+                <div class="antenna-rod right"></div>
+                <div class="antenna-base"></div>
               </div>
-              <div class="juice-box-label">
-                <h4 class="juice-box-title">{video.title}</h4>
-                <p class="juice-box-desc">{video.description}</p>
-                <div class="juice-box-meta">
-                  <span>{video.date}</span>
-                  <span class="juice-box-badge">YOUTUBE</span>
+              <!-- CRT Housing — chunky beige/cream plastic -->
+              <div class="tv-housing">
+                <!-- Sticker on TV housing, above the screen -->
+                <div class="tv-sticker" aria-hidden="true">KIWI MART PROPERTY<br/>DO NOT TOUCH!</div>
+                <!-- Screen area -->
+                <div class="tv-screen-wrap">
+                  <div class="tv-screen" id="tv-screen" data-videos={JSON.stringify(videos.map(v => v.videoId))}>
+                    <canvas id="tv-static-canvas"></canvas>
+                    <div class="tv-scanlines"></div>
+                    <div class="tv-glow"></div>
+                    <div class="tv-channel-display" id="tv-channel-display">CH 01</div>
+                    <!-- Single YouTube iframe — src swapped on channel change -->
+                    <iframe
+                      id="tv-iframe"
+                      class="tv-iframe"
+                      src=""
+                      data-src={`https://www.youtube.com/embed/${videos[0].videoId}?rel=0&modestbranding=1&autoplay=1&mute=1`}
+                      title={videos[0].title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                  <div class="tv-reflection"></div>
+                </div>
+                <!-- Bottom strip with brand + knobs + volume dial -->
+                <div class="tv-bottom-strip">
+                  <span class="tv-brand-name">KIWI</span>
+                  <div class="tv-knobs">
+                    <div class="tv-knob"></div>
+                    <div class="tv-knob"></div>
+                  </div>
+                  <div class="tv-volume-group">
+                    <span class="tv-volume-label">VOL</span>
+                    <button class="tv-volume-dial muted" id="tv-volume-dial" aria-label="Toggle sound" title="Click to toggle sound">
+                      <div class="dial-notch"></div>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </a>
-          ))}
+            </div>
+
+            <!-- TV Stand: shelf + cabinet -->
+            <div class="tv-stand">
+              <div class="tv-stand-shelf">
+                <div class="shelf-price-tag">FREE VIEWING</div>
+                <div class="shelf-price-tag tag-yellow">ORGANIC CONTENT</div>
+              </div>
+              <div class="tv-stand-cabinet">
+                <div class="cabinet-door door-left">
+                  <div class="cabinet-panel">
+                    <div class="cabinet-knob"></div>
+                  </div>
+                </div>
+                <div class="cabinet-divider"></div>
+                <div class="cabinet-door door-right">
+                  <div class="cabinet-panel">
+                    <div class="cabinet-knob"></div>
+                  </div>
+                </div>
+                <!-- Stickers on the cabinet -->
+                <div class="cab-sticker cab-sticker-organic" aria-hidden="true">ORGANIC</div>
+                <div class="cab-sticker cab-sticker-local" aria-hidden="true">LOCAL<br/>FAVORITE</div>
+                <div class="cab-coupon" aria-hidden="true">
+                  <span class="coupon-off">50% OFF</span>
+                  <span class="coupon-detail">BINGE WATCHING</span>
+                  <div class="coupon-dashed"></div>
+                  <span class="coupon-code">CODE: KIWI50</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remote / Channel Guide — styled as a clipboard or receipt -->
+          <div class="remote-control">
+            <div class="remote-body">
+              <!-- Clipboard clip -->
+              <div class="clipboard-clip"></div>
+              <div class="remote-header">
+                <div class="remote-title">CHANNEL GUIDE</div>
+                <div class="remote-sub">~ pick your flavor ~</div>
+              </div>
+              <!-- Current channel display -->
+              <div class="remote-now-playing">
+                <span class="now-label">NOW PLAYING</span>
+                <span class="now-ch" id="remote-ch-num">CH 01</span>
+              </div>
+              <!-- Channel Buttons as menu items -->
+              <div class="remote-channels">
+                {videos.map((video, i) => (
+                  <button
+                    class={`ch-btn ${i === 0 ? 'active' : ''}`}
+                    data-channel={i}
+                    data-ch={video.ch}
+                  >
+                    <span class="ch-btn-num">CH {video.ch}</span>
+                    <span class="ch-btn-dots"></span>
+                    <span class="ch-btn-title">{video.title}</span>
+                  </button>
+                ))}
+              </div>
+              <!-- Channel nav arrows -->
+              <div class="remote-nav">
+                <button class="ch-nav-btn" id="ch-up" aria-label="Previous channel">
+                  ▲ PREV
+                </button>
+                <button class="ch-nav-btn" id="ch-down" aria-label="Next channel">
+                  NEXT ▼
+                </button>
+              </div>
+              <!-- Footer -->
+              <div class="remote-footer">
+                <a href="https://www.youtube.com/@kpopreaction" target="_blank" rel="noopener" class="remote-yt-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
+                  VISIT FULL CHANNEL
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div style="text-align: center; margin-top: 30px;">
-          <a href="https://www.youtube.com/@kpopreaction" target="_blank" rel="noopener" class="cta-btn" style="max-width: 400px; margin: 0 auto;">
-            VISIT YOUTUBE CHANNEL
-          </a>
-        </div>
       </div>
     </section>
 
@@ -969,6 +1083,7 @@ const videos = [
     flex: 0 0 350px; background-color: var(--pouch-bg); border-radius: 20px;
     padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     border: 2px solid rgba(0,0,0,0.05);
+    contain: layout style paint;
   }
   .serving-panel:not(:last-child)::after {
     content: ''; position: absolute; top: 50%; right: -32px; width: 34px; height: 12px;
@@ -1105,28 +1220,524 @@ const videos = [
     box-shadow: 1px 1px 0px var(--seed-black);
   }
 
-  /* ==================== VIDEOS ==================== */
+  /* ==================== VIDEOS / DELI TV ==================== */
   .section-videos {
     padding: 80px 0;
     position: relative; z-index: 10;
     scroll-margin-top: 60px;
   }
-  .cooler-label { text-align: center; margin-bottom: 30px; }
-  .cooler-icon { width: 70px; height: 70px; background: var(--pouch-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; border: 3px solid var(--seed-black); color: var(--seed-black); }
-  .cooler-title { font-family: var(--font-logo); color: white; font-size: 32px; text-shadow: 2px 2px 0 var(--seed-black); margin-bottom: 6px; }
-  .cooler-label p { color: rgba(255,255,255,0.8); font-size: 15px; }
-  .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-  .juice-box { background: var(--pouch-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.15); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; border: 2px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-  .juice-box:hover { transform: scale(1.03) translateY(-5px); }
-  .juice-box-top { height: 160px; background: linear-gradient(135deg, var(--kiwi-main) 0%, var(--kiwi-dark) 100%); display: flex; align-items: center; justify-content: center; position: relative; }
-  .play-circle { width: 56px; height: 56px; background: rgba(0,0,0,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid rgba(255,255,255,0.5); transition: all 0.2s; }
-  .juice-box:hover .play-circle { background: rgba(0,0,0,0.5); transform: scale(1.1); }
-  .juice-box-straw { position: absolute; top: -18px; right: 28px; width: 14px; height: 45px; background: repeating-linear-gradient(45deg, #fff, #fff 6px, var(--bg-color) 6px, var(--bg-color) 12px); border: 2px solid var(--seed-black); border-radius: 3px; transform: rotate(10deg); }
-  .juice-box-label { padding: 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .juice-box-title { font-family: var(--font-logo); font-size: 18px; color: var(--seed-black); }
-  .juice-box-desc { font-family: var(--font-data); font-size: 13px; color: #666; line-height: 1.5; }
-  .juice-box-meta { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 8px; font-family: var(--font-data); font-size: 12px; color: #888; }
-  .juice-box-badge { background: var(--ink-red); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 10px; }
+
+  /* --- TV + Remote Layout --- */
+  .deli-tv-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 36px;
+  }
+
+  /* === TV AREA (tv + shelf + stickers) === */
+  .tv-area {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* Wall stickers */
+  .wall-sticker {
+    position: absolute;
+    font-family: var(--font-display); font-weight: 800;
+    z-index: 5; pointer-events: none;
+    border-radius: 4px; padding: 4px 10px;
+    border: 2px solid var(--seed-black);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+  }
+  .sticker-1 {
+    top: 10px; left: -30px;
+    background: var(--accent-yellow); color: var(--seed-black);
+    font-size: 13px; transform: rotate(-8deg);
+  }
+  .sticker-2 {
+    top: -5px; right: -20px;
+    background: var(--ink-red); color: #fff;
+    font-size: 11px; transform: rotate(5deg);
+    border-radius: 50%; width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+  }
+  /* Cabinet stickers & coupon */
+  .cab-sticker {
+    position: absolute;
+    font-family: var(--font-display); font-weight: 800;
+    z-index: 5; pointer-events: none;
+    border-radius: 4px; padding: 3px 8px;
+    border: 2px solid var(--seed-black);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+    font-size: 9px; letter-spacing: 1px;
+  }
+  .cab-sticker-organic {
+    top: 8px; left: 12px;
+    background: var(--kiwi-main); color: #fff;
+    transform: rotate(-4deg);
+  }
+  .cab-sticker-local {
+    bottom: 10px; right: 14px;
+    background: var(--bg-color); color: #fff;
+    font-size: 8px; transform: rotate(3deg);
+    text-align: center; line-height: 1.3;
+  }
+  .cab-coupon {
+    position: absolute;
+    top: 6px; right: 14px;
+    background: #fff;
+    border: 2px dashed var(--seed-black);
+    border-radius: 5px;
+    padding: 4px 8px;
+    text-align: center;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.08);
+    z-index: 5; pointer-events: none;
+    transform: rotate(2deg);
+  }
+  .coupon-off {
+    display: block;
+    font-family: var(--font-logo);
+    font-size: 11px;
+    color: var(--ink-red);
+    line-height: 1;
+  }
+  .coupon-detail {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 6px;
+    font-weight: 700;
+    color: var(--seed-black);
+    letter-spacing: 1px;
+    margin-top: 1px;
+  }
+  .coupon-dashed {
+    border-top: 1px dashed #ccc;
+    margin: 3px 0;
+  }
+  .coupon-code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 6px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 1px;
+  }
+
+  /* === THE TV SET === */
+  .tv-set {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Antenna — connected to TV top */
+  .tv-antenna {
+    position: relative; width: 120px; height: 50px;
+    margin-bottom: -14px; z-index: 3;
+  }
+  .antenna-rod {
+    position: absolute; bottom: 0;
+    width: 4px; height: 48px;
+    background: linear-gradient(180deg, #bbb 0%, #888 100%);
+    border-radius: 2px;
+  }
+  .antenna-rod.left { left: 18px; transform: rotate(-22deg); transform-origin: bottom center; }
+  .antenna-rod.right { right: 18px; transform: rotate(22deg); transform-origin: bottom center; }
+  .antenna-rod::before {
+    content: ''; position: absolute; top: -4px; left: -3px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: radial-gradient(circle, #eee, #999);
+  }
+  .antenna-base {
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    width: 24px; height: 10px;
+    background: linear-gradient(180deg, #999, #666);
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  /* TV Housing — chunky retro beige plastic */
+  .tv-housing {
+    background: linear-gradient(160deg, #d4c8b0 0%, #c2b49a 30%, #b8a88e 100%);
+    border-radius: 18px;
+    padding: 20px 20px 10px;
+    box-shadow:
+      0 15px 40px rgba(0,0,0,0.35),
+      inset 0 2px 0 rgba(255,255,255,0.4),
+      inset 0 -2px 0 rgba(0,0,0,0.1),
+      0 0 0 3px #a89878;
+    position: relative;
+  }
+
+  /* Sticker on TV housing */
+  .tv-sticker {
+    position: absolute; top: -8px; right: -12px;
+    background: #fff; color: var(--ink-red);
+    font-family: var(--font-mono); font-size: 8px; font-weight: 700;
+    padding: 4px 8px; border: 1px solid #ccc;
+    transform: rotate(3deg);
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    line-height: 1.4; text-align: center;
+    z-index: 4;
+  }
+
+
+  /* Screen */
+  .tv-screen-wrap {
+    position: relative;
+    width: 460px; height: 310px;
+    border-radius: 16px 16px 12px 12px;
+    overflow: hidden;
+    border: 4px solid #3a3020;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .tv-screen {
+    width: 100%; height: 100%;
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Static noise canvas */
+  #tv-static-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Scanlines */
+  .tv-scanlines {
+    position: absolute; inset: 0; z-index: 5;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px);
+    pointer-events: none;
+  }
+
+  /* Screen glow + reflection */
+  .tv-glow {
+    position: absolute; inset: 0; z-index: 4;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+  }
+  .tv-reflection {
+    position: absolute; top: 0; left: 0; right: 0; height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    border-radius: 12px 12px 0 0;
+    pointer-events: none; z-index: 6;
+  }
+
+  /* Channel display */
+  .tv-channel-display {
+    position: absolute; top: 14px; right: 16px; z-index: 8;
+    font-family: var(--font-mono); font-size: 18px; font-weight: 700;
+    color: #0f0; text-shadow: 0 0 10px rgba(0,255,0,0.6);
+    opacity: 0; pointer-events: none;
+  }
+  .tv-channel-display.show { animation: chDisplay 1.8s ease forwards; }
+  @keyframes chDisplay {
+    0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; }
+  }
+
+  /* YouTube iframe */
+  .tv-iframe {
+    position: absolute; inset: 0; z-index: 3;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* TV Bottom strip — beige with knobs */
+  .tv-bottom-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px 4px;
+  }
+  .tv-brand-name {
+    font-family: var(--font-logo); font-size: 13px;
+    color: #7a6a52; letter-spacing: 3px;
+  }
+  .tv-knobs { display: flex; gap: 8px; }
+  .tv-knob {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: linear-gradient(135deg, #a89878, #8a7a62);
+    border: 2px solid #7a6a52;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 1px 3px rgba(0,0,0,0.2);
+  }
+  /* Volume group — label + dial */
+  .tv-volume-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tv-volume-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    color: #7a6a52;
+    letter-spacing: 1.5px;
+  }
+  /* Volume dial — inline in bottom strip */
+  .tv-volume-dial {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid #7a6a52;
+    background: linear-gradient(145deg, #d4c8b0, #a89878);
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,0.3),
+      0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+  .tv-volume-dial:hover {
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,0.3),
+      0 2px 6px rgba(0,0,0,0.3);
+  }
+  .dial-notch {
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: #5a4a32;
+    border-radius: 2px;
+  }
+  .tv-volume-dial.muted {
+    transform: rotate(-120deg);
+  }
+  .tv-volume-dial.unmuted {
+    transform: rotate(40deg);
+  }
+
+  /* TV Stand — shelf + cabinet */
+  .tv-stand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tv-stand-shelf {
+    width: 580px;
+    height: 18px;
+    background: linear-gradient(180deg, #c9a06a 0%, var(--shelf-wood) 40%, var(--shelf-shadow) 100%);
+    border: 3px solid var(--shelf-shadow);
+    border-top: 2px solid #daa06d;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 0 16px;
+  }
+  .tv-stand-cabinet {
+    width: 480px;
+    height: 100px;
+    background: linear-gradient(180deg, #c9a06a 0%, var(--shelf-wood) 40%, var(--shelf-shadow) 100%);
+    border: 3px solid var(--shelf-shadow);
+    border-top: 2px solid #daa06d;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: stretch;
+    padding: 10px 12px;
+    gap: 0;
+    position: relative;
+  }
+  .cabinet-door {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cabinet-panel {
+    width: 90%;
+    height: 80%;
+    border: 2px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.06) 100%);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  .cabinet-knob {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #c9a06a, #8B5E34);
+    border: 1.5px solid #6b4a28;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .door-left .cabinet-knob { right: 8px; }
+  .door-right .cabinet-knob { left: 8px; }
+  .cabinet-divider {
+    width: 2px;
+    align-self: stretch;
+    margin: 6px 0;
+    background: rgba(0,0,0,0.15);
+    border-radius: 1px;
+  }
+  .shelf-price-tag {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 800;
+    background: #fff; color: var(--ink-red);
+    padding: 2px 8px; border: 1px solid #ccc;
+    transform: rotate(-2deg);
+    letter-spacing: 1px;
+  }
+  .shelf-price-tag.tag-yellow {
+    background: var(--accent-yellow); color: var(--seed-black);
+    transform: rotate(1deg);
+  }
+
+  /* === REMOTE / CHANNEL GUIDE (clipboard / receipt style) === */
+  .remote-control {
+    flex-shrink: 0;
+    margin-top: 50px;
+  }
+  .remote-body {
+    width: 230px;
+    background: var(--pouch-bg);
+    border: 3px solid var(--seed-black);
+    border-radius: 8px;
+    padding: 28px 18px 20px;
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.08);
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+
+  /* Clipboard clip at top */
+  .clipboard-clip {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 22px;
+    background: linear-gradient(180deg, #bbb, #999);
+    border-radius: 4px 4px 0 0;
+    border: 2px solid #888;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .clipboard-clip::after {
+    content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 4px;
+    background: var(--pouch-bg); border-radius: 2px;
+  }
+
+  .remote-header { text-align: center; margin-bottom: 14px; }
+  .remote-title {
+    font-family: var(--font-logo); font-size: 20px;
+    color: var(--seed-black);
+    border-bottom: 3px solid var(--seed-black);
+    padding-bottom: 6px; margin-bottom: 4px;
+    display: inline-block;
+  }
+  .remote-sub {
+    font-family: var(--font-mono); font-size: 11px;
+    color: #999; letter-spacing: 1px;
+  }
+
+  /* Now playing */
+  .remote-now-playing {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--seed-black); color: #fff;
+    padding: 8px 12px; border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .now-label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--kiwi-light); letter-spacing: 1px;
+  }
+  .now-ch {
+    font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+    color: var(--accent-yellow);
+  }
+
+  /* Channel buttons — receipt menu items */
+  .remote-channels {
+    display: flex; flex-direction: column; gap: 0;
+    width: 100%;
+    border-top: 2px solid var(--seed-black);
+    border-bottom: 2px solid var(--seed-black);
+    margin-bottom: 12px;
+  }
+  .ch-btn {
+    display: flex; align-items: center; gap: 0;
+    width: 100%; padding: 10px 4px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+  }
+  .ch-btn:last-child { border-bottom: none; }
+  .ch-btn:hover { background: rgba(108,166,50,0.08); }
+  .ch-btn.active {
+    background: rgba(108,166,50,0.12);
+  }
+  .ch-btn.active .ch-btn-num { color: var(--kiwi-dark); }
+  .ch-btn.active .ch-btn-title { color: var(--seed-black); font-weight: 700; }
+
+  .ch-btn-num {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    color: var(--ink-red);
+    min-width: 44px; flex-shrink: 0;
+  }
+  .ch-btn-dots {
+    flex: 1; border-bottom: 1px dotted rgba(0,0,0,0.25);
+    margin: 0 6px; min-width: 10px;
+    height: 0; align-self: flex-end; margin-bottom: 3px;
+  }
+  .ch-btn-title {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: #666; text-align: right;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 120px;
+  }
+
+  /* Channel nav arrows */
+  .remote-nav {
+    display: flex; gap: 8px; margin-bottom: 14px;
+  }
+  .ch-nav-btn {
+    flex: 1;
+    padding: 8px;
+    background: #fff;
+    border: 2px solid var(--seed-black);
+    border-radius: 6px;
+    font-family: var(--font-display); font-size: 11px; font-weight: 700;
+    color: var(--seed-black);
+    cursor: pointer;
+    transition: all 0.1s;
+    text-align: center;
+    box-shadow: 2px 2px 0px var(--seed-black);
+  }
+  .ch-nav-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px var(--seed-black);
+  }
+  .ch-nav-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--seed-black);
+  }
+
+  /* Footer */
+  .remote-footer { text-align: center; }
+  .remote-yt-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-color); color: #fff;
+    font-family: var(--font-logo); font-size: 12px;
+    padding: 8px 16px; border-radius: 8px;
+    border: 2px solid var(--seed-black);
+    box-shadow: 3px 3px 0px var(--seed-black);
+    transition: all 0.1s;
+    letter-spacing: 0.5px;
+  }
+  .remote-yt-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--seed-black);
+  }
+  .remote-thanks {
+    font-family: var(--font-mono); font-size: 9px;
+    color: #aaa; margin-top: 10px; letter-spacing: 1px;
+  }
 
   /* ==================== FOOTER ==================== */
   .site-footer {
@@ -1175,7 +1786,18 @@ const videos = [
     .item-name { font-size: 14px; }
     .item-price { font-size: 16px; }
     .total-row { font-size: 18px; }
-    .video-grid { grid-template-columns: 1fr; }
+    .deli-tv-wrapper { flex-direction: column; align-items: center; gap: 24px; }
+    .tv-screen-wrap { width: 300px; height: 210px; }
+    .tv-housing { padding: 14px 14px 8px; }
+    .tv-stand-shelf { width: 360px; }
+    .tv-stand-cabinet { width: 300px; height: 70px; }
+    .wall-sticker { display: none; }
+    .cab-sticker { display: none; }
+    .cab-coupon { display: none; }
+    .tv-sticker { display: none; }
+    .remote-control { margin-top: 0; }
+    .remote-body { width: 100%; max-width: 340px; }
+    .remote-channels { max-height: none; }
   }
 </style>
 
@@ -1230,4 +1852,132 @@ const videos = [
       }
     });
   }, hasSeenSplash ? 100 : 2000);
+
+  // ===== DELI TV CHANNEL SWITCHER =====
+  (() => {
+    let currentCh = 0;
+    let isMuted = true;
+    const chBtns = document.querySelectorAll('.ch-btn');
+    const chDisplay = document.getElementById('tv-channel-display');
+    const chNum = document.getElementById('remote-ch-num');
+    const iframe = document.getElementById('tv-iframe');
+    const tvScreen = document.getElementById('tv-screen');
+    const volumeDial = document.getElementById('tv-volume-dial');
+    const videoIds = JSON.parse(tvScreen?.dataset.videos || '[]');
+    const total = videoIds.length;
+
+    function getEmbedUrl(videoId) {
+      return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1&mute=${isMuted ? 1 : 0}&enablejsapi=1`;
+    }
+
+    // Canvas static noise (지지직)
+    const canvas = document.getElementById('tv-static-canvas');
+    const ctx = canvas?.getContext('2d');
+    let staticRAF = null;
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawStatic() {
+      if (!ctx || canvas.style.opacity === '0') { staticRAF = null; return; }
+      const idata = ctx.createImageData(canvas.width, canvas.height);
+      const buf = new Uint32Array(idata.data.buffer);
+      for (let i = 0; i < buf.length; i++) {
+        const v = (Math.random() * 255) | 0;
+        buf[i] = 0xff000000 | (v << 16) | (v << 8) | v;
+      }
+      ctx.putImageData(idata, 0, 0);
+      staticRAF = requestAnimationFrame(drawStatic);
+    }
+
+    function showStatic() {
+      if (!canvas) return;
+      canvas.style.opacity = '1';
+      if (!staticRAF) drawStatic();
+    }
+
+    function hideStatic() {
+      if (!canvas) return;
+      canvas.style.opacity = '0';
+      if (staticRAF) { cancelAnimationFrame(staticRAF); staticRAF = null; }
+    }
+
+    function switchChannel(idx) {
+      if (idx === currentCh || idx < 0 || idx >= total) return;
+      currentCh = idx;
+
+      // Show static noise + blank the iframe
+      showStatic();
+      if (iframe) iframe.src = '';
+
+      // After static, load new video
+      setTimeout(() => {
+        if (iframe) iframe.src = getEmbedUrl(videoIds[currentCh]);
+        hideStatic();
+      }, 500);
+
+      // Update channel display on screen
+      const chCode = chBtns[currentCh]?.dataset.ch || '01';
+      if (chDisplay) {
+        chDisplay.textContent = `CH ${chCode}`;
+        chDisplay.classList.remove('show');
+        void chDisplay.offsetWidth;
+        chDisplay.classList.add('show');
+      }
+
+      // Update remote clipboard display
+      if (chNum) chNum.textContent = `CH ${chCode}`;
+
+      // Update active button
+      chBtns.forEach(b => b.classList.remove('active'));
+      chBtns[currentCh]?.classList.add('active');
+    }
+
+    // Channel button clicks
+    chBtns.forEach((btn, i) => {
+      btn.addEventListener('click', () => switchChannel(i));
+    });
+
+    // Arrow navigation (PREV / NEXT)
+    document.getElementById('ch-up')?.addEventListener('click', () => {
+      switchChannel((currentCh - 1 + total) % total);
+    });
+    document.getElementById('ch-down')?.addEventListener('click', () => {
+      switchChannel((currentCh + 1) % total);
+    });
+
+    // Autoplay on scroll into view
+    if (iframe && tvScreen) {
+      let tvStarted = false;
+      const tvObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !tvStarted) {
+            tvStarted = true;
+            iframe.src = getEmbedUrl(videoIds[0]);
+            tvObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+      tvObserver.observe(tvScreen);
+    }
+
+    // Volume dial toggle — uses YouTube postMessage API (no reload)
+    if (volumeDial && iframe) {
+      volumeDial.addEventListener('click', () => {
+        isMuted = !isMuted;
+        volumeDial.classList.toggle('muted', isMuted);
+        volumeDial.classList.toggle('unmuted', !isMuted);
+        iframe.contentWindow?.postMessage(JSON.stringify({
+          event: 'command',
+          func: isMuted ? 'mute' : 'unMute'
+        }), '*');
+      });
+    }
+  })();
+
 </script>
