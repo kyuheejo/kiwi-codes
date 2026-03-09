@@ -1,17 +1,38 @@
 ---
-const links = [
-  { href: '#hero', label: 'Ingredients' },
-  { href: '#experience', label: 'Flavors' },
-  { href: '#projects', label: 'Squeeze Me' },
-  { href: '#blog', label: 'Recipes' },
-  { href: '#videos', label: 'Frozen Aisle' },
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isHomePage = pathname === '/';
+
+const sectionLinks = [
+  { id: 'hero', label: 'Ingredients' },
+  { id: 'experience', label: 'Flavors' },
+  { id: 'projects', label: 'Squeeze Me' },
+  { id: 'blog', label: 'Recipes' },
+  { id: 'videos', label: 'Frozen Aisle' },
 ];
+
+const links = sectionLinks.map(link => {
+  if (isHomePage) {
+    return { href: `#${link.id}`, label: link.label, id: link.id };
+  }
+  if (link.id === 'blog') {
+    return { href: '/blog', label: link.label, id: link.id };
+  }
+  return { href: `/#${link.id}`, label: link.label, id: link.id };
+});
+
+const activeId = !isHomePage && pathname.startsWith('/blog') ? 'blog' : '';
 ---
 
-<nav class="site-nav" id="site-nav">
+<nav class="site-nav" id="site-nav" data-page-context={isHomePage ? 'home' : 'subpage'}>
   <div class="nav-pill">
     {links.map(link => (
-      <a href={link.href} class="nav-link">{link.label}</a>
+      <a
+        href={link.href}
+        class:list={['nav-link', { active: link.id === activeId }]}
+        data-section={link.id}
+      >
+        {link.label}
+      </a>
     ))}
   </div>
   <button class="nav-toggle" aria-label="Toggle menu">
@@ -143,38 +164,44 @@ const links = [
     });
   });
 
-  // Show nav after splash hides
   const nav = document.getElementById('site-nav');
-  const splash = document.getElementById('splash');
-  if (splash) {
-    const observer = new MutationObserver(() => {
-      if (splash.classList.contains('hidden')) {
-        nav?.classList.add('visible');
-        observer.disconnect();
-      }
-    });
-    observer.observe(splash, { attributes: true, attributeFilter: ['class'] });
+  const isHomePage = nav?.dataset.pageContext === 'home';
+
+  if (isHomePage) {
+    // HOME: wait for splash, then show nav + scroll highlighting
+    const splash = document.getElementById('splash');
+    if (splash) {
+      const observer = new MutationObserver(() => {
+        if (splash.classList.contains('hidden')) {
+          nav?.classList.add('visible');
+          observer.disconnect();
+        }
+      });
+      observer.observe(splash, { attributes: true, attributeFilter: ['class'] });
+    } else {
+      nav?.classList.add('visible');
+    }
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const highlightNav = () => {
+      let current = '';
+      sections.forEach(section => {
+        const el = section as HTMLElement;
+        if (window.scrollY >= el.offsetTop - 120) {
+          current = el.getAttribute('id') || '';
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-section') === current);
+      });
+    };
+
+    window.addEventListener('scroll', highlightNav, { passive: true });
+    highlightNav();
   } else {
+    // SUBPAGE: show nav immediately, active class already set server-side
     nav?.classList.add('visible');
   }
-
-  // Active section highlighting on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  const highlightNav = () => {
-    let current = '';
-    sections.forEach(section => {
-      const el = section as HTMLElement;
-      if (window.scrollY >= el.offsetTop - 120) {
-        current = el.getAttribute('id') || '';
-      }
-    });
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
-    });
-  };
-
-  window.addEventListener('scroll', highlightNav, { passive: true });
-  highlightNav();
 </script>

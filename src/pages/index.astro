@@ -456,19 +456,10 @@ const videos = [
     <section id="videos" class="section-videos">
       <div class="section-inner">
         <div class="header-strip reveal">
-          <span>Video creation</span>
+          <span>Creative exploration</span>
           <span class="header-strip-sub">FRESHLY BLENDED</span>
         </div>
 
-        <div class="cooler-label reveal">
-          <div class="cooler-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7l7 4z"/>
-            </svg>
-          </div>
-          <h3 class="cooler-title">BEVERAGE COOLER</h3>
-          <p>Video content — AI experiments, tech talks, and creative projects</p>
-        </div>
 
         <div class="video-grid">
           {videos.map((video) => (
@@ -526,7 +517,7 @@ const videos = [
     justify-content: center;
     align-items: center;
     z-index: 200;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
   .splash-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
   .splash-bg-fruit { position: absolute; z-index: 1; opacity: 0.3; animation: float 10s infinite ease-in-out; }
@@ -534,7 +525,7 @@ const videos = [
   .pouch-mini {
     width: 400px; max-width: 90vw; background-color: var(--pouch-bg); border-radius: 24px;
     padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative;
-    animation: squeeze 2s ease-in-out infinite; transform-origin: center; border: 4px solid var(--seed-black);
+    animation: squeeze 1s ease-in-out infinite; transform-origin: center; border: 4px solid var(--seed-black);
   }
   .straw {
     position: absolute; top: -50px; right: 60px; width: 25px; height: 80px;
@@ -551,10 +542,10 @@ const videos = [
   .pouch-text { font-family: var(--font-logo); color: var(--seed-black); font-size: 32px; text-align: center; line-height: 0.9; }
   .progress-wrapper { width: 100%; margin-top: 30px; }
   .juice-bar-container { width: 100%; height: 40px; background: #fff; border: 4px solid var(--seed-black); border-radius: 20px; overflow: hidden; }
-  .juice-fill { height: 100%; width: 0%; background-color: var(--kiwi-light); border-right: 4px solid var(--kiwi-dark); animation: fillJuice 3.5s ease-out forwards; position: relative; }
-  .juice-fill::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.4) 20%, transparent 20%); background-size: 15px 15px; animation: moveBubbles 2s linear infinite; }
+  .juice-fill { height: 100%; width: 0%; background-color: var(--kiwi-light); border-right: 4px solid var(--kiwi-dark); animation: fillJuice 1.75s ease-out forwards; position: relative; }
+  .juice-fill::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.4) 20%, transparent 20%); background-size: 15px 15px; animation: moveBubbles 1s linear infinite; }
   .vitamin-text { margin-top: 15px; text-align: center; font-family: var(--font-data); font-weight: 800; font-size: 12px; color: var(--kiwi-dark); }
-  .loading-tagline { margin-top: 24px; color: white; font-family: var(--font-logo); font-size: 22px; text-shadow: 2px 2px 0px var(--seed-black); letter-spacing: 1px; animation: pulse 1.5s ease-in-out infinite; text-align: center; }
+  .loading-tagline { margin-top: 24px; color: white; font-family: var(--font-logo); font-size: 22px; text-shadow: 2px 2px 0px var(--seed-black); letter-spacing: 1px; animation: pulse 0.75s ease-in-out infinite; text-align: center; }
 
   /* ==================== LAYOUT ==================== */
   .main-hidden { opacity: 0; }
@@ -1189,11 +1180,21 @@ const videos = [
 </style>
 
 <script>
-  // Splash → main transition
-  setTimeout(() => {
+  // Splash → main transition (only show once per session)
+  const hasSeenSplash = sessionStorage.getItem('kiwi-splash-seen');
+
+  if (hasSeenSplash) {
+    // Skip splash entirely — show main content immediately
     document.getElementById('splash')?.classList.add('hidden');
     document.getElementById('main-content')?.classList.add('main-visible');
-  }, 3800);
+  } else {
+    // First visit — play the animation, then mark as seen
+    sessionStorage.setItem('kiwi-splash-seen', 'true');
+    setTimeout(() => {
+      document.getElementById('splash')?.classList.add('hidden');
+      document.getElementById('main-content')?.classList.add('main-visible');
+    }, 1900);
+  }
 
   // Scroll-triggered reveal animations
   const revealObserver = new IntersectionObserver(
@@ -1228,5 +1229,5 @@ const videos = [
         revealObserver.observe(el);
       }
     });
-  }, 4000);
+  }, hasSeenSplash ? 100 : 2000);
 </script>
