@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Titan+One&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1200px;
+      height: 630px;
+      background: #E87A35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Floating kiwi decorations */
+    .kiwi-float {
+      position: absolute;
+      font-size: 64px;
+      opacity: 0.15;
+    }
+    .kiwi-float:nth-child(1) { top: 30px; left: 40px; transform: rotate(-15deg); }
+    .kiwi-float:nth-child(2) { top: 50px; right: 80px; font-size: 48px; transform: rotate(20deg); }
+    .kiwi-float:nth-child(3) { bottom: 40px; left: 100px; font-size: 52px; transform: rotate(10deg); }
+    .kiwi-float:nth-child(4) { bottom: 60px; right: 50px; font-size: 72px; transform: rotate(-25deg); }
+    .kiwi-float:nth-child(5) { top: 250px; left: 20px; font-size: 40px; transform: rotate(35deg); }
+
+    .card {
+      width: 1060px;
+      height: 490px;
+      background: #F4EBE1;
+      border-radius: 32px;
+      border: 4px solid #2A1F1A;
+      display: flex;
+      align-items: center;
+      padding: 50px 60px;
+      gap: 50px;
+      position: relative;
+      box-shadow: 8px 8px 0px #2A1F1A;
+    }
+
+    .left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .logo-blob {
+      width: 200px;
+      height: 200px;
+      background: #6CA632;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 4px solid #2A1F1A;
+      box-shadow: 4px 4px 0px #2A1F1A;
+      position: relative;
+    }
+
+    .logo-text {
+      font-family: 'Titan One', cursive;
+      color: #F4EBE1;
+      font-size: 28px;
+      text-align: center;
+      line-height: 1.1;
+      text-shadow: 2px 2px 0px #4A7320;
+    }
+
+    .logo-emoji {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 40px;
+    }
+
+    .brand-badge {
+      background: #F2C12E;
+      border: 3px solid #2A1F1A;
+      border-radius: 50px;
+      padding: 6px 20px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #2A1F1A;
+      letter-spacing: 1px;
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .name {
+      font-family: 'Titan One', cursive;
+      font-size: 52px;
+      color: #2A1F1A;
+      line-height: 1;
+    }
+
+    .tagline {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 26px;
+      color: #6CA632;
+      font-weight: 600;
+    }
+
+    .divider {
+      width: 100%;
+      height: 3px;
+      background: #2A1F1A;
+      margin: 4px 0;
+    }
+
+    .nutrition-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .nutrition-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: #2A1F1A;
+      padding: 4px 0;
+      border-bottom: 1px dotted #2A1F1A40;
+    }
+
+    .nutrition-row .label {
+      font-weight: 600;
+    }
+
+    .nutrition-row .value {
+      font-weight: 800;
+      color: #6CA632;
+    }
+
+    .url {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: #2A1F1A;
+      opacity: 0.5;
+      margin-top: auto;
+      letter-spacing: 0.5px;
+    }
+
+    .corner-badges {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .corner-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid #2A1F1A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 9px;
+      text-align: center;
+      line-height: 1.1;
+      color: #F4EBE1;
+    }
+
+    .corner-badge.green { background: #6CA632; transform: rotate(5deg); }
+    .corner-badge.red { background: #d32f2f; transform: rotate(-5deg); }
+  </style>
+</head>
+<body>
+  <div class="kiwi-float">🥝</div>
+  <div class="kiwi-float">🍃</div>
+  <div class="kiwi-float">🥝</div>
+  <div class="kiwi-float">🍃</div>
+  <div class="kiwi-float">🥝</div>
+
+  <div class="card">
+    <div class="corner-badges">
+      <div class="corner-badge green">100%<br>DEV</div>
+      <div class="corner-badge red">FRESH<br>CODE</div>
+    </div>
+
+    <div class="left">
+      <div class="logo-blob">
+        <span class="logo-text">KIWI<br>MADE</span>
+        <span class="logo-emoji">🥝</span>
+      </div>
+      <div class="brand-badge">FRESHLY SQUEEZED</div>
+    </div>
+
+    <div class="right">
+      <div class="name">Kyuhee Jo</div>
+      <div class="tagline">Coder · Creator · Consultant</div>
+      <div class="divider"></div>
+      <div class="nutrition-mini">
+        <div class="nutrition-row">
+          <span class="label">Experience</span>
+          <span class="value">Palantir · McKinsey · Google</span>
+        </div>
+        <div class="nutrition-row">
+          <span class="label">Education</span>
+          <span class="value">Johns Hopkins CS '23</span>
+        </div>
+        <div class="nutrition-row">
+          <span class="label">Currently</span>
+          <span class="value">Founding GTM @ Trillion Labs</span>
+        </div>
+        <div class="nutrition-row">
+          <span class="label">Stack</span>
+          <span class="value">Python · JS · React · Go</span>
+        </div>
+      </div>
+      <div class="url">kiwi-codes.vercel.app</div>
+    </div>
+  </div>
+</body>
+</html>
