@@ -1,0 +1,718 @@
+<html lang="en" vid="0"><head vid="1">
+<meta charset="UTF-8" vid="2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" vid="3">
+<title vid="4">Deli Guestbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&amp;family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;700;800&amp;family=Titan+One&amp;family=VT323&amp;display=swap" rel="stylesheet" vid="7">
+
+<style vid="8">
+  :root {
+    --bg-color: #E87A35;
+    --pouch-bg: #F4EBE1;
+    --kiwi-main: #6CA632;
+    --seed-black: #2A1F1A;
+    --accent-yellow: #F2C12E;
+    --ink-red: #d32f2f;
+    --chalk-green: #2d4a22;
+    
+    --font-logo: 'Titan One', cursive;
+    --font-display: 'Fredoka', sans-serif;
+    --font-data: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-led: 'VT323', monospace;
+
+    --metal-light: #f5f5f5;
+    --metal-mid: #b0b0b0;
+    --metal-dark: #555;
+    
+    --shadow-sm: 0 2px 4px rgba(42, 31, 26, 0.15);
+    --shadow-md: 0 4px 8px rgba(42, 31, 26, 0.25);
+    --shadow-lg: 0 10px 20px rgba(42, 31, 26, 0.3);
+    --shadow-hardware: 0 15px 25px rgba(0,0,0,0.4);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: #fdfbf7;
+    
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    font-family: var(--font-data);
+    color: var(--seed-black);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  
+  .deli-header-zone {
+    position: relative;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    z-index: 10;
+  }
+
+  .deli-sign {
+    background-color: var(--bg-color);
+    color: var(--pouch-bg);
+    padding: 12px 24px;
+    border: 4px solid var(--seed-black);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--seed-black);
+    transform: rotate(-1deg);
+  }
+
+  .deli-sign h1 {
+    font-family: var(--font-logo);
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  }
+
+  .led-display {
+    background-color: #0a0a0a;
+    border: 6px solid #222;
+    border-radius: 4px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--shadow-md);
+    position: relative;
+  }
+
+  .led-display::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(255,255,255,0.1) 50%, rgba(0,0,0,0.1) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  .led-label {
+    color: #888;
+    font-family: var(--font-data);
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
+  .led-num {
+    font-family: var(--font-led);
+    color: #ff3333;
+    font-size: 2.5rem;
+    line-height: 1;
+    text-shadow: 0 0 8px #ff0000, 0 0 15px #ff0000;
+    letter-spacing: 2px;
+  }
+
+  
+  .dispenser-container {
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    width: 100px;
+    height: 140px;
+    transform: rotate(5deg);
+    z-index: 5;
+  }
+
+  .dispenser-body {
+    width: 80px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--ink-red) 0%, #a01d1d 100%);
+    border-radius: 40px 40px 10px 10px;
+    box-shadow: 
+      inset -5px -5px 10px rgba(0,0,0,0.3),
+      inset 5px 5px 10px rgba(255,255,255,0.2),
+      var(--shadow-hardware);
+    position: relative;
+    border: 2px solid #8a1515;
+  }
+
+  .dispenser-slot {
+    position: absolute;
+    bottom: 15px;
+    left: 10px;
+    width: 60px;
+    height: 8px;
+    background-color: #111;
+    border-radius: 4px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .dispenser-ticket-stub {
+    position: absolute;
+    bottom: -15px;
+    left: 25px;
+    width: 30px;
+    height: 35px;
+    background-color: var(--pouch-bg);
+    box-shadow: var(--shadow-sm);
+    border: 1px dashed #ccc;
+    border-top: none;
+    z-index: -1;
+  }
+
+  .dispenser-label {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+    width: 50px;
+    text-align: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  
+  .rack-section {
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+    height: 380px; 
+  }
+
+  .metal-rail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    background: linear-gradient(to bottom, #f0f0f0 0%, #b0b0b0 40%, #888 50%, #d0d0d0 60%, #999 100%);
+    box-shadow: 
+      0 10px 15px rgba(0,0,0,0.3),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #555;
+    z-index: 20;
+  }
+
+  
+  .metal-rail::before {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-image: radial-gradient(circle at 10px 3px, rgba(255,255,255,0.4) 1px, transparent 2px),
+                      radial-gradient(circle at center, rgba(0,0,0,0.3) 3px, transparent 4px);
+    background-size: 24px 100%;
+  }
+
+  .ticket-scroller {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 24px 20px 40px 20px; 
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;  
+    height: 100%;
+    align-items: flex-start;
+  }
+  
+  .ticket-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  
+  .ticket-wrapper {
+    position: relative;
+    scroll-snap-align: center;
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    transform-origin: top center;
+    animation: sway 4s ease-in-out infinite alternate;
+  }
+
+  
+  .ticket-wrapper:nth-child(2) { animation-delay: -1.2s; animation-duration: 4.5s; }
+  .ticket-wrapper:nth-child(3) { animation-delay: -2.5s; animation-duration: 3.8s; }
+  .ticket-wrapper:nth-child(4) { animation-delay: -0.7s; animation-duration: 4.2s; }
+
+  @keyframes sway {
+    0% { transform: rotate(-2deg); }
+    100% { transform: rotate(2deg); }
+  }
+
+  
+  .clip-hardware {
+    position: absolute;
+    top: -24px; 
+    width: 24px;
+    height: 40px;
+    z-index: 25;
+    pointer-events: none;
+  }
+
+  .clip-hardware::before {
+    
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 4px;
+    width: 16px;
+    height: 20px;
+    border: 3px solid #ccc;
+    border-radius: 8px 8px 0 0;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.4);
+    background: transparent;
+  }
+
+  .clip-hardware::after {
+    
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 0;
+    width: 24px;
+    height: 16px;
+    background: linear-gradient(to right, #999, #eee, #999);
+    border: 1px solid #555;
+    border-radius: 2px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+
+  
+  .ticket {
+    background-color: var(--pouch-bg);
+    width: 100%;
+    min-height: 260px;
+    margin-top: 10px; 
+    padding: 20px 16px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  
+  .ticket-standard::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-image: radial-gradient(circle, transparent 3px, var(--pouch-bg) 4px);
+    background-size: 10px 10px;
+    background-position: top center;
+  }
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 12px;
+  }
+
+  .t-num {
+    font-family: var(--font-display);
+    color: var(--ink-red);
+    font-size: 2.2rem;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .t-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: #888;
+    text-align: right;
+    line-height: 1.2;
+  }
+
+  .t-divider {
+    border: none;
+    border-top: 2px dotted #ccc;
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .t-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--seed-black);
+    margin-bottom: 8px;
+  }
+
+  .t-msg {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--seed-black);
+    flex-grow: 1;
+  }
+
+  .t-stamp {
+    align-self: flex-end;
+    margin-top: 16px;
+    font-family: var(--font-logo);
+    color: var(--ink-red);
+    font-size: 1rem;
+    opacity: 0.8;
+    transform: rotate(-10deg);
+    border: 2px solid var(--ink-red);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  
+  .ticket-chalkboard {
+    background-color: var(--chalk-green);
+    color: var(--pouch-bg);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), var(--shadow-md);
+  }
+  
+  
+  .ticket-chalkboard::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(-45deg, transparent 33.33%, var(--chalk-green) 33.33%, var(--chalk-green) 66.66%, transparent 66.66%),
+                linear-gradient(45deg, transparent 33.33%, var(--chalk-green) 33.33%, var(--chalk-green) 66.66%, transparent 66.66%);
+    background-size: 10px 20px;
+  }
+
+  .chalk-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--accent-yellow);
+    text-align: center;
+    border-bottom: 2px dashed rgba(255,255,255,0.3);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .chalk-text {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+  
+  .chalk-price {
+    font-family: var(--font-logo);
+    font-size: 2rem;
+    color: var(--pouch-bg);
+    text-align: center;
+    margin-top: auto;
+  }
+
+  
+  .ticket-coupon {
+    background-color: #fff;
+    border: 1px dashed #aaa;
+  }
+
+  .coupon-head {
+    background-color: var(--seed-black);
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-data);
+    font-weight: 800;
+    padding: 4px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .coupon-body {
+    text-align: center;
+    font-family: var(--font-mono);
+  }
+
+  .coupon-body h4 {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+  }
+
+  .barcode {
+    height: 40px;
+    width: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--seed-black),
+      var(--seed-black) 2px,
+      transparent 2px,
+      transparent 4px,
+      var(--seed-black) 4px,
+      var(--seed-black) 5px,
+      transparent 5px,
+      transparent 8px
+    );
+    margin-top: auto;
+    margin-bottom: 4px;
+  }
+  
+  .barcode-text {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  
+  .form-section {
+    padding: 0 16px 40px 16px;
+    margin-top: -20px; 
+  }
+
+  .order-slip {
+    background-color: var(--pouch-bg);
+    border: 6px solid var(--seed-black); 
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  
+  .order-slip::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    border: 1px solid var(--seed-black);
+    pointer-events: none;
+  }
+
+  .slip-header {
+    background-color: var(--ink-red);
+    color: var(--pouch-bg);
+    padding: 12px;
+    text-align: center;
+    margin: 4px 4px 0 4px;
+  }
+
+  .slip-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .slip-header p {
+    font-family: var(--font-data);
+    font-size: 0.65rem;
+    font-weight: 600;
+    opacity: 0.8;
+  }
+
+  .slip-body {
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-group label {
+    font-family: var(--font-data);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--seed-black);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .input-group label span.req {
+    color: var(--ink-red);
+  }
+
+  
+  .slip-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px dotted var(--seed-black);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--seed-black);
+    padding: 4px 0;
+    outline: none;
+    border-radius: 0;
+  }
+
+  .slip-input:focus {
+    border-bottom: 2px solid var(--ink-red);
+  }
+
+  textarea.slip-input {
+    resize: none;
+    line-height: 1.5;
+    
+    background-image: linear-gradient(transparent, transparent calc(1.5em - 2px), #ccc calc(1.5em - 2px), #ccc 1.5em);
+    background-size: 100% 1.5em;
+    border-bottom: none;
+  }
+
+  .btn-submit {
+    align-self: center;
+    background: transparent;
+    border: 4px solid var(--ink-red);
+    color: var(--ink-red);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    margin-top: 10px;
+    cursor: pointer;
+    transform: rotate(-3deg);
+    transition: all 0.2s ease;
+    box-shadow: 2px 2px 0 rgba(211, 47, 47, 0.2);
+  }
+
+  .btn-submit:active {
+    transform: rotate(-1deg) scale(0.98);
+    box-shadow: 0 0 0 rgba(211, 47, 47, 0);
+    background-color: rgba(211, 47, 47, 0.05);
+  }
+
+</style>
+</head>
+<body vid="9">
+
+  <div class="deli-header-zone" vid="10">
+    
+    <div class="dispenser-container" vid="11">
+      <div class="dispenser-body" vid="12">
+        <div class="dispenser-label" vid="13">TICKETS</div>
+        <div class="dispenser-slot" vid="14"></div>
+      </div>
+      <div class="dispenser-ticket-stub" vid="15"></div>
+    </div>
+
+    
+    <div class="deli-sign" vid="16">
+      <h1 vid="17">방명록 · GUESTBOOK</h1>
+    </div>
+
+    
+    <div class="led-display" vid="18">
+      <span class="led-label" vid="19">NOW SERVING</span>
+      <span class="led-num" vid="20">#042</span>
+    </div>
+  </div>
+
+  
+  <section class="rack-section" vid="21">
+    <div class="metal-rail" vid="22"></div>
+    
+    <div class="ticket-scroller" vid="23">
+      
+      
+      <div class="ticket-wrapper" vid="24">
+        <div class="clip-hardware" vid="25"></div>
+        <div class="ticket ticket-chalkboard" vid="26">
+          <div class="chalk-title" vid="27">Kyuhee's Special</div>
+          <p class="chalk-text" vid="28">Leave a review, get a free side of pickles!</p>
+          <div class="chalk-price" vid="29">⭐</div>
+        </div>
+      </div>
+
+      
+      <div class="ticket-wrapper" vid="30">
+        <div class="clip-hardware" vid="31"></div>
+        <div class="ticket ticket-standard" vid="32">
+          <div class="ticket-header" vid="33">
+            <span class="t-num" vid="34">#038</span>
+            <span class="t-date" vid="35">OCT 24<br vid="36">09:15 AM</span>
+          </div>
+          <hr class="t-divider" vid="37">
+          <h3 class="t-name" vid="38">Alex M.</h3>
+          <p class="t-msg" vid="39">The pastrami here is life changing. Will be back tomorrow.</p>
+          <div class="t-stamp" vid="40">VERIFIED</div>
+        </div>
+      </div>
+
+      
+      <div class="ticket-wrapper" vid="41">
+        <div class="clip-hardware" vid="42"></div>
+        <div class="ticket ticket-standard" vid="43">
+          <div class="ticket-header" vid="44">
+            <span class="t-num" vid="45">#039</span>
+            <span class="t-date" vid="46">OCT 24<br vid="47">11:42 AM</span>
+          </div>
+          <hr class="t-divider" vid="48">
+          <h3 class="t-name" vid="49">Jisu Kim</h3>
+          <p class="t-msg" vid="50">Love the new site layout. The attention to detail is crazy!</p>
+          <div class="t-stamp" vid="51">THANKS</div>
+        </div>
+      </div>
+
+      
+      <div class="ticket-wrapper" vid="52">
+        <div class="clip-hardware" vid="53"></div>
+        <div class="ticket ticket-coupon" vid="54">
+          <div class="coupon-head" vid="55">✂ CLIP &amp; SAVE</div>
+          <div class="coupon-body" vid="56">
+            <h4 vid="57">10% OFF</h4>
+            <p vid="58">Your Next Order</p>
+          </div>
+          <div class="barcode" vid="59"></div>
+          <div class="barcode-text" vid="60">042-889-102</div>
+        </div>
+      </div>
+
+      
+      <div style="flex: 0 0 16px;" vid="61"></div>
+
+    </div>
+  </section>
+
+  
+  <section class="form-section" vid="62">
+    <form class="order-slip" vid="63">
+      <div class="slip-header" vid="64">
+        <h2 vid="65">TAKE A NUMBER</h2>
+        <p vid="66">번호표 뽑기</p>
+      </div>
+      
+      <div class="slip-body" vid="67">
+        <div class="input-group" vid="68">
+          <label vid="69">Name / 이름 <span class="req" vid="70">REQ</span></label>
+          <input type="text" class="slip-input" required="" placeholder="J. Doe" vid="71">
+        </div>
+
+        <div class="input-group" vid="72">
+          <label vid="73">Message / 남길 말씀 <span class="req" vid="74">REQ</span></label>
+          <textarea class="slip-input" rows="3" required="" placeholder="Write your order..." vid="75"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" vid="76">SUBMIT ORDER →</button>
+      </div>
+    </form>
+  </section>
+
+
+</body></html>

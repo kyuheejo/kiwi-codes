@@ -153,6 +153,28 @@ const videos = [
   { title: 'Hackweek 25 Sponge', ch: '05', videoId: 'GNvdu9AvLuI' },
   { title: 'Supermark Demo', ch: '06', videoId: 'bWkILFzM0JE' },
 ];
+
+const promos = [
+  {
+    type: 'chalkboard',
+    title: "TODAY'S SPECIAL",
+    content: 'Now hiring: one motivated dev. Benefits include unlimited kiwi juice & creative freedom.',
+    badge: 'HIRING',
+  },
+  {
+    type: 'coupon',
+    title: '100% OFF',
+    content: 'Your next consultation',
+    code: 'KIWI2025',
+    detail: 'Valid while Kyuhee is alive',
+  },
+  {
+    type: 'chalkboard',
+    title: 'WEEKLY PICK',
+    content: 'Check out Slide Studio — markdown to beautiful presentations, offline!',
+    badge: 'NEW',
+  },
+];
 ---
 
 <BaseLayout title="Kiwi Made — Kyuhee Jo">
@@ -349,7 +371,8 @@ const videos = [
           <span class="header-strip-sub">FRESHLY SQUEEZED SINCE 2021</span>
         </div>
 
-        <div class="shelf reveal">
+        <!-- Desktop: first row (3 projects) -->
+        <div class="shelf shelf-desktop-top reveal">
           {projects.slice(0, 3).map((p) => (
             <div class="pouch reveal-scale">
               <div class="tech-badge-pouch" style={`background: ${p.badgeColor}`}>
@@ -379,7 +402,8 @@ const videos = [
           </div>
         </div>
 
-        <div class="shelf shelf-narrow reveal">
+        <!-- Desktop: second row (2 projects) -->
+        <div class="shelf shelf-narrow shelf-desktop-bottom reveal">
           {projects.slice(3).map((p) => (
             <div class="pouch reveal-scale">
               <div class="tech-badge-pouch" style={`background: ${p.badgeColor}`}>
@@ -406,6 +430,42 @@ const videos = [
             <div class="price-tag">NEW FLAVOR!</div>
             <div class="price-tag">PREMIUM QUALITY</div>
           </div>
+        </div>
+
+        <!-- Mobile: single swipe rack with all projects -->
+        <div class="shelf shelf-mobile reveal">
+          <div class="shelf-scroller" id="mobile-shelf">
+            {projects.map((p) => (
+              <div class="pouch">
+                <div class="tech-badge-pouch" style={`background: ${p.badgeColor}`}>
+                  {p.badgeText.split('\n').map((line, i) => i === 0 ? line : <><br/>{line}</>)}
+                </div>
+                <div class="project-screenshot">
+                  <img src={p.screenshot} alt={`${p.title} screenshot`} />
+                </div>
+                <div class="pouch-header">
+                  <div class="flavor-badge">{p.flavor}</div>
+                  <h3 class="project-title">{p.title}</h3>
+                </div>
+                <p class="project-desc">{p.description}</p>
+                <div class="nutrition-mini">
+                  <div class="nutrition-mini-header">App Stack Facts</div>
+                  {p.stack.map((s) => (
+                    <div class="nl-row"><b>{s.label}</b> <span>{s.value}</span></div>
+                  ))}
+                </div>
+                <span class="recipe-btn">VIEW RECIPE</span>
+              </div>
+            ))}
+          </div>
+          <div class="price-tag-rail">
+            <div class="price-tag mobile-price-tag">PRICED TO HIRE: $0.00</div>
+          </div>
+        </div>
+        <div class="shelf-dots" id="shelf-dots">
+          {projects.map((_, i) => (
+            <button class={`shelf-dot ${i === 0 ? 'active' : ''}`} data-index={i} aria-label={`Go to project ${i + 1}`}></button>
+          ))}
         </div>
       </div>
     </section>
@@ -604,6 +664,71 @@ const videos = [
       </div>
     </section>
 
+    <!-- ===== GUESTBOOK / DELI COUNTER ===== -->
+    <section id="guestbook" class="section-guestbook">
+      <div class="section-inner">
+
+        <div class="header-strip reveal">
+          <span>Order Rack</span>
+          <span class="header-strip-sub">Visitor Notes</span>
+        </div>
+
+        <!-- Control Desk: dispenser | LED | form -->
+        <div class="gb-control-desk reveal">
+
+          <!-- Ticket Dispenser (hidden on mobile) -->
+          <div class="gb-dispenser">
+            <div class="gb-dispenser-cap"></div>
+            <div class="gb-dispenser-label">Order Rack</div>
+            <div class="gb-dispenser-slot"></div>
+            <div class="gb-dispenser-stub" id="dispenser-next-num">043</div>
+          </div>
+
+          <!-- LED Panel -->
+          <div class="gb-led-panel">
+            <div class="gb-led-label">Now Serving</div>
+            <div class="gb-led-text" id="now-serving-num">001</div>
+          </div>
+
+          <!-- Order Form -->
+          <div class="gb-form-wrapper">
+            <div class="gb-order-form">
+              <div class="gb-order-form-inner">
+                <div class="gb-form-header">Order Slip</div>
+                <form id="guestbook-form" class="ticket-form">
+                  <div class="gb-form-row">
+                    <label class="gb-form-label">Name</label>
+                    <input type="text" name="name" class="gb-form-input" maxlength="30" required placeholder="Write your name here..." autocomplete="off" />
+                  </div>
+                  <div class="gb-form-row">
+                    <label class="gb-form-label">Message</label>
+                    <textarea name="message" class="gb-form-input" rows="2" maxlength="200" required placeholder="Leave a message for the deli..."></textarea>
+                  </div>
+                  <div class="gb-char-count"><span id="char-count">0</span>/200</div>
+                  <button type="submit" class="gb-submit-btn" id="gb-submit-btn">Submit Order →</button>
+                  <div id="form-status" class="form-status"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ticket Rack System -->
+        <div class="gb-rack-system reveal-scale" data-promos={JSON.stringify(promos)}>
+          <div class="gb-rail-container">
+            <div class="gb-metal-rail">
+              <div class="gb-rail-groove"></div>
+            </div>
+          </div>
+          <div class="gb-tickets-track" id="ticket-board">
+            <!-- Tickets rendered by JS -->
+            <div class="gb-ticket-sentinel" id="ticket-sentinel"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
       <div class="footer-inner">
@@ -621,7 +746,7 @@ const videos = [
   </div>
 </BaseLayout>
 
-<style>
+<style is:global>
   /* ==================== SPLASH ==================== */
   .splash-overlay {
     position: fixed;
@@ -1129,6 +1254,10 @@ const videos = [
     border-radius: 4px; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
   }
   .shelf-narrow { padding-left: 15%; padding-right: 15%; }
+
+  /* Mobile shelf hidden on desktop */
+  .shelf-mobile { display: none; }
+  .shelf-dots { display: none; }
   .price-tag-rail { position: absolute; bottom: -22px; width: 100%; display: flex; justify-content: space-around; z-index: 15; }
   .shelf-narrow .price-tag-rail { left: 0; right: 0; padding-left: 15%; padding-right: 15%; }
   .price-tag { background: #FFFDE7; border: 2px solid var(--seed-black); padding: 4px 12px; font-family: var(--font-data); font-weight: 800; font-size: 13px; color: var(--ink-red); transform: rotate(2deg); }
@@ -1739,6 +1868,659 @@ const videos = [
     color: #aaa; margin-top: 10px; letter-spacing: 1px;
   }
 
+  /* ==================== GUESTBOOK / DELI COUNTER ==================== */
+  .section-guestbook {
+    padding: 80px 0;
+    position: relative; z-index: 10;
+    scroll-margin-top: 60px;
+  }
+
+  /* Deli Sign */
+  .gb-deli-sign {
+    background-color: var(--bg-color);
+    color: var(--pouch-bg);
+    padding: 1rem 3rem;
+    border: 6px solid var(--seed-black);
+    box-shadow:
+      inset 0 0 0 4px var(--bg-color),
+      inset 0 0 0 6px var(--pouch-bg),
+      6px 6px 0px rgba(0,0,0,0.15);
+    text-align: center;
+    transform: rotate(-1deg);
+    margin: 0 auto 3rem;
+    width: fit-content;
+  }
+  .gb-deli-sign h2 {
+    font-family: var(--font-logo);
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0px var(--seed-black);
+    margin: 0;
+    line-height: 1;
+  }
+  .gb-deli-sign-sub {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+  }
+
+  /* Control Desk */
+  .gb-control-desk {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    align-items: end;
+    padding: 0 2rem;
+  }
+
+  /* Ticket Dispenser */
+  .gb-dispenser {
+    width: 120px;
+    height: 180px;
+    background: linear-gradient(135deg, #e53935, var(--ink-red), #b71c1c);
+    border-radius: 60px 60px 10px 10px;
+    position: relative;
+    box-shadow:
+      inset -5px -5px 15px rgba(0,0,0,0.3),
+      inset 5px 5px 15px rgba(255,255,255,0.3),
+      5px 10px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #8e0000;
+  }
+  .gb-dispenser-cap {
+    width: 80px;
+    height: 30px;
+    background: #111;
+    border-radius: 20px 20px 0 0;
+    margin-top: -10px;
+  }
+  .gb-dispenser-label {
+    color: white;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-align: center;
+    letter-spacing: 1px;
+    transform: rotate(-90deg);
+    position: absolute;
+    left: -20px;
+    top: 70px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  }
+  .gb-dispenser-slot {
+    width: 60px;
+    height: 10px;
+    background: #1a1a1a;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 20px;
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.8);
+    z-index: 2;
+  }
+  .gb-dispenser-stub {
+    width: 46px;
+    height: 40px;
+    background: var(--pouch-bg);
+    position: absolute;
+    bottom: -15px;
+    border-radius: 0 0 5px 5px;
+    border: 1px solid #ccc;
+    border-top: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 5px;
+    color: var(--ink-red);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    transform-origin: top;
+    transform: rotateX(20deg);
+  }
+
+  /* LED Panel */
+  .gb-led-panel {
+    background-color: #111;
+    border: 8px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    box-shadow:
+      inset 0 0 20px rgba(0,0,0,0.8),
+      0 10px 20px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .gb-led-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.25) 50%),
+      linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    z-index: 2;
+    border-radius: 4px;
+  }
+  .gb-led-label {
+    color: #666;
+    font-family: var(--font-data);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .gb-led-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 3rem;
+    color: #ff2a2a;
+    text-shadow:
+      0 0 5px #ff2a2a,
+      0 0 15px #ff2a2a,
+      0 0 30px rgba(255,42,42,0.5);
+    line-height: 1;
+    letter-spacing: 4px;
+  }
+
+  /* Order Form */
+  .gb-form-wrapper {
+    justify-self: center;
+    width: 100%;
+    max-width: 400px;
+  }
+  .gb-order-form {
+    background-color: var(--pouch-bg);
+    border: 4px solid var(--seed-black);
+    padding: 4px;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(42,31,26,0.15), 0 2px 4px rgba(42,31,26,0.1);
+    transform: rotate(1deg);
+  }
+  .gb-order-form-inner {
+    border: 2px solid var(--seed-black);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .gb-form-header {
+    background-color: var(--ink-red);
+    color: var(--pouch-bg);
+    text-align: center;
+    padding: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    margin: -1.5rem -1.5rem 0.5rem -1.5rem;
+    border-bottom: 2px solid var(--seed-black);
+  }
+  .gb-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .gb-form-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--seed-black);
+  }
+  .gb-form-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px dotted var(--seed-black);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--seed-black);
+    padding: 0.3rem 0;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .gb-form-input:focus {
+    border-bottom-color: var(--ink-red);
+    border-bottom-style: solid;
+  }
+  textarea.gb-form-input {
+    resize: none;
+    line-height: 1.5;
+  }
+  .gb-char-count {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #aaa;
+    margin-top: -8px;
+  }
+  .gb-submit-btn {
+    background: transparent;
+    border: 3px solid var(--ink-red);
+    color: var(--ink-red);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    padding: 0.8rem;
+    cursor: pointer;
+    transform: rotate(-2deg);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  .gb-submit-btn:hover {
+    background-color: var(--ink-red);
+    color: var(--pouch-bg);
+    transform: rotate(0deg) scale(1.02);
+  }
+  .gb-submit-btn:active {
+    transform: rotate(0deg) scale(0.98);
+  }
+  .gb-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: rotate(-2deg);
+  }
+  .form-status {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    min-height: 20px;
+  }
+  .form-status.success { color: var(--kiwi-main); }
+  .form-status.error { color: var(--ink-red); }
+
+  /* Rack System */
+  .gb-rack-system {
+    width: 100%;
+    position: relative;
+    margin-top: 1rem;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .gb-rail-container {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+  .gb-metal-rail {
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to bottom, #e6e6e6 0%, #b3b3b3 20%, #808080 50%, #e6e6e6 80%, #b3b3b3 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3), inset 0 2px 3px rgba(255,255,255,0.8);
+    position: relative;
+    z-index: 10;
+  }
+  .gb-rail-groove {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    right: 10px;
+    height: 4px;
+    background: #222;
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  /* Tickets Track (horizontal scroller) */
+  .gb-tickets-track {
+    display: flex;
+    gap: 20px;
+    padding: 25px 20px 0 20px;
+    margin-top: -40px;
+    width: 100%;
+    overflow-x: auto;
+    align-items: flex-start;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+  }
+  .gb-tickets-track::-webkit-scrollbar { display: none; }
+
+  /* Ticket Wrapper (hangs from rail, top tucked behind it) */
+  .gb-ticket-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    transform-origin: top center;
+    animation: gbSway 3s ease-in-out infinite alternate;
+    z-index: 5;
+    transition: z-index 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .gb-ticket-wrapper:hover {
+    z-index: 20;
+    animation-play-state: paused;
+    transform: scale(1.05) rotate(0deg) !important;
+  }
+  .gb-ticket-wrapper:nth-child(even) { animation-duration: 3.5s; animation-direction: alternate-reverse; }
+  .gb-ticket-wrapper:nth-child(3n) { animation-duration: 4s; }
+
+  @keyframes gbSway {
+    0% { transform: rotate(-2deg); }
+    100% { transform: rotate(2deg); }
+  }
+
+  /* Metal Clip — pill-shaped with bearing dot */
+  .gb-metal-clip {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 40px;
+    background: linear-gradient(to right, #ccc, #f0f0f0, #aaa);
+    border-radius: 12px 12px 2px 2px;
+    box-shadow: 2px 5px 8px rgba(0,0,0,0.4), inset 0 1px 2px white;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+  }
+  /* Bearing dot */
+  .gb-metal-clip::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #444;
+    border-radius: 50%;
+    box-shadow: inset 0 1px 2px black;
+  }
+
+  /* Ticket Card */
+  .gb-ticket {
+    width: 260px;
+    background-color: var(--pouch-bg);
+    box-shadow: 2px 8px 15px rgba(0,0,0,0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #dcd3c8;
+    transition: box-shadow 0.3s ease;
+  }
+  .gb-ticket-wrapper:hover .gb-ticket {
+    box-shadow: 5px 15px 30px rgba(0,0,0,0.3);
+  }
+
+  /* Perforated edges */
+  .gb-ticket-perf {
+    height: 10px;
+    width: 100%;
+    background-image: radial-gradient(circle at 5px 0px, transparent 4px, var(--pouch-bg) 5px);
+    background-size: 10px 10px;
+    background-position: bottom;
+    border-bottom: 2px dashed #ccc;
+  }
+  .gb-ticket-perf.bottom {
+    background-image: radial-gradient(circle at 5px 10px, transparent 4px, var(--pouch-bg) 5px);
+    background-position: top;
+    border-bottom: none;
+    border-top: 2px dashed #ccc;
+  }
+
+  /* Ticket Content */
+  .gb-ticket-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .gb-ticket-num-header {
+    text-align: center;
+    border-bottom: 2px solid var(--seed-black);
+    padding-bottom: 0.5rem;
+  }
+  .gb-ticket-label-sm {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .gb-ticket-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--ink-red);
+    line-height: 0.8;
+    letter-spacing: -2px;
+  }
+
+  /* Data row with dotted leader */
+  .gb-data-row {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--seed-black);
+  }
+  .gb-data-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  .gb-data-leader {
+    flex-grow: 1;
+    border-bottom: 2px dotted #aaa;
+    margin: 0 4px;
+    position: relative;
+    top: -4px;
+  }
+  .gb-data-value {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink-red);
+    flex-shrink: 0;
+  }
+
+  /* Ticket Message */
+  .gb-ticket-msg {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--seed-black);
+    padding: 0.8rem;
+    border: 2px solid var(--seed-black);
+    background-color: rgba(0,0,0,0.02);
+    position: relative;
+    word-break: break-word;
+  }
+  .gb-stamp-date {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    padding: 2px 6px;
+    transform: rotate(-15deg);
+    opacity: 0.8;
+    border-radius: 2px;
+    background: var(--pouch-bg);
+  }
+
+  /* Chalkboard Promo */
+  .gb-chalkboard {
+    width: 280px;
+    background-color: #2d4a22;
+    color: #f0f4f0;
+    box-shadow: 0 8px 16px rgba(42,31,26,0.15), 0 2px 4px rgba(42,31,26,0.1);
+    padding: 1.5rem;
+    border: 4px solid #1a2b13;
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .gb-chalkboard::after {
+    content: '';
+    position: absolute;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 2px dashed rgba(255,255,255,0.4);
+    pointer-events: none;
+  }
+  .gb-chalk-header {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: #f2a65a;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    width: 100%;
+  }
+  .gb-chalk-text {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+  .gb-chalk-footer {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Coupon Promo */
+  .gb-coupon {
+    width: 240px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(42,31,26,0.15), 0 2px 4px rgba(42,31,26,0.1);
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .gb-coupon-cutline {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 0;
+    border-top: 2px dashed #999;
+    margin-top: 15px;
+    z-index: 1;
+  }
+  .gb-coupon-scissor {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    background: #fff;
+    padding: 0 4px;
+    z-index: 2;
+    font-size: 1.2rem;
+  }
+  .gb-coupon-title {
+    font-family: var(--font-logo);
+    font-size: 1.6rem;
+    color: var(--ink-red);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .gb-coupon-desc {
+    font-family: var(--font-data);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-top: 2px solid var(--seed-black);
+    border-bottom: 2px solid var(--seed-black);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+  }
+  .gb-coupon-code {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--kiwi-main);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .gb-barcode {
+    height: 50px;
+    width: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      #000, #000 2px, transparent 2px, transparent 4px,
+      #000 4px, #000 5px, transparent 5px, transparent 8px,
+      #000 8px, #000 12px, transparent 12px, transparent 14px
+    );
+    margin-bottom: 0.5rem;
+  }
+  .gb-barcode-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+  }
+
+  /* Sentinel & Loading */
+  .gb-ticket-sentinel {
+    flex: 0 0 1px;
+    height: 1px;
+  }
+  .gb-loading-more {
+    flex: 0 0 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 2px;
+  }
+
+  /* Ticket entry animation */
+  @keyframes ticketDrop {
+    from { opacity: 0; transform: translateY(-30px) scale(0.8); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .gb-ticket-new {
+    animation: ticketDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* Placeholder ticket styling */
+  .gb-ticket-placeholder .gb-ticket-msg {
+    border-style: dashed;
+    color: #888;
+    font-style: italic;
+  }
+
   /* ==================== FOOTER ==================== */
   .site-footer {
     background: var(--seed-black);
@@ -1754,6 +2536,18 @@ const videos = [
   .footer-links a { color: rgba(255,255,255,0.7); font-family: var(--font-data); font-weight: 600; font-size: 14px; transition: color 0.2s; }
   .footer-links a:hover { color: var(--kiwi-light); }
   .footer-copy { font-size: 12px !important; color: rgba(255,255,255,0.3) !important; }
+
+  /* ==================== TABLET ==================== */
+  @media (max-width: 900px) {
+    .gb-control-desk {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+    .gb-dispenser { display: none; }
+    .gb-order-form { transform: none; }
+  }
 
   /* ==================== MOBILE ==================== */
   @media (max-width: 768px) {
@@ -1778,9 +2572,61 @@ const videos = [
     .header-strip { flex-direction: column; font-size: 20px; gap: 8px; text-align: center; padding: 12px 20px; }
     .timeline-scroll { gap: 16px; }
     .serving-panel { flex: 0 0 300px; padding: 20px; }
-    .shelf { flex-direction: column; align-items: center; }
-    .pouch { width: 100%; max-width: 340px; }
-    .price-tag-rail { flex-wrap: wrap; gap: 6px; justify-content: center; }
+    /* Hide desktop shelves on mobile, show mobile shelf */
+    .shelf-desktop-top, .shelf-desktop-bottom { display: none !important; }
+    .shelf-mobile {
+      display: block !important;
+      overflow: visible;
+      margin-bottom: 60px;
+      padding: 0;
+    }
+    .shelf-scroller {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      gap: 16px;
+      padding: 40px 16px 20px;
+      align-items: stretch;
+    }
+    .shelf-scroller::-webkit-scrollbar { display: none; }
+    .shelf-mobile .pouch {
+      flex: 0 0 280px;
+      width: 280px;
+      max-width: none;
+      scroll-snap-align: center;
+    }
+    .shelf-mobile .price-tag-rail {
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      justify-content: center;
+    }
+    .shelf-dots {
+      display: flex !important;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    .shelf-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--seed-black);
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .shelf-dot.active {
+      background: var(--kiwi-main);
+      transform: scale(1.3);
+    }
     .receipt-board { padding: 30px 16px; }
     .receipt-logo { font-size: 26px; }
     .item-name { font-size: 14px; }
@@ -1798,6 +2644,28 @@ const videos = [
     .remote-control { margin-top: 0; }
     .remote-body { width: 100%; max-width: 340px; }
     .remote-channels { max-height: none; }
+    /* Guestbook mobile */
+    .gb-deli-sign { padding: 0.8rem 1.5rem; margin-bottom: 2rem; }
+    .gb-deli-sign h2 { font-size: 1.5rem; }
+    .gb-deli-sign-sub { font-size: 0.65rem; letter-spacing: 2px; }
+    .gb-control-desk {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.5rem;
+      padding: 0 16px;
+    }
+    .gb-dispenser { display: none; }
+    .gb-led-panel { padding: 1rem 1.5rem; border-width: 6px; text-align: center; }
+    .gb-led-text { font-size: 2rem; }
+    .gb-form-wrapper { max-width: 100%; width: 100%; }
+    .gb-order-form { transform: none; }
+    .gb-ticket { width: 220px; }
+    .gb-chalkboard { width: 220px; font-size: 0.9rem; }
+    .gb-coupon { width: 200px; }
+    .gb-tickets-track { padding: 15px 1rem 3rem 1rem; gap: 1.2rem; margin-top: -25px; }
+    .gb-ticket-num { font-size: 2.5rem; }
+    .gb-ticket-content { padding: 1rem; gap: 0.6rem; }
   }
 </style>
 
@@ -1978,6 +2846,526 @@ const videos = [
         }), '*');
       });
     }
+  })();
+
+  // ===== GUESTBOOK / DELI COUNTER =====
+  (() => {
+    const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
+    const SUPABASE_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    const board = document.getElementById('ticket-board');
+    const sentinel = document.getElementById('ticket-sentinel');
+    const form = document.getElementById('guestbook-form') as HTMLFormElement | null;
+    const statusEl = document.getElementById('form-status');
+    const submitBtn = document.getElementById('gb-submit-btn') as HTMLButtonElement | null;
+    const nowServingEl = document.getElementById('now-serving-num');
+    const dispenserNumEl = document.getElementById('dispenser-next-num');
+    const charCountEl = document.getElementById('char-count');
+    const rackSystem = document.querySelector('.gb-rack-system');
+    const promos = JSON.parse(rackSystem?.getAttribute('data-promos') || '[]');
+    const RATE_LIMIT_MS = 5 * 60 * 1000;
+    const PROMO_POSITIONS = [3, 7, 13];
+    const PAGE_SIZE = 20;
+
+    // Pagination state
+    let allTickets: any[] = [];
+    let isLoadingMore = false;
+    let hasMoreTickets = true;
+    let lastTicketNumber: number | null = null;
+    let promoIdx = 0;
+
+    // Basic profanity filter
+    const BLOCKED_WORDS = [
+      'fuck', 'shit', 'damn', 'ass', 'bitch', 'dick', 'crap',
+      'bastard', 'hell', 'piss', 'whore', 'slut',
+      '시발', '씨발', '개새끼', '병신', '지랄', '닥쳐', '꺼져',
+    ];
+
+    function containsProfanity(text: string): boolean {
+      const lower = text.toLowerCase();
+      return BLOCKED_WORDS.some(w => lower.includes(w));
+    }
+
+    function formatDate(dateStr: string): string {
+      const d = new Date(dateStr);
+      const now = new Date();
+      const diffMs = now.getTime() - d.getTime();
+      const diffMin = Math.floor(diffMs / 60000);
+      if (diffMin < 5) return 'JUST NOW';
+      if (diffMin < 60) return `${diffMin}m AGO`;
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+    }
+
+    function escapeHtml(str: string): string {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function randomSwayStyle(): string {
+      const dur = (5 + Math.random() * 4).toFixed(1);
+      const delay = (Math.random() * -8).toFixed(1);
+      return `animation-duration: ${dur}s; animation-delay: ${delay}s;`;
+    }
+
+    // Create a ticket wrapper with clip
+    function createWrapper(innerEl: HTMLElement, isNew = false): HTMLElement {
+      const wrapper = document.createElement('div');
+      wrapper.className = `gb-ticket-wrapper${isNew ? ' gb-ticket-new' : ''}`;
+      wrapper.setAttribute('style', randomSwayStyle());
+      wrapper.innerHTML = '<div class="gb-metal-clip"></div>';
+      wrapper.appendChild(innerEl);
+      return wrapper;
+    }
+
+    // Rich ticket card
+    function createTicketEl(ticket: { ticket_number: number; name: string; message: string; created_at: string }, isNew = false): HTMLElement {
+      const num = String(ticket.ticket_number).padStart(3, '0');
+      const el = document.createElement('div');
+      el.className = 'gb-ticket';
+      el.innerHTML = `
+        <div class="gb-ticket-perf"></div>
+        <div class="gb-ticket-content">
+          <div class="gb-ticket-num-header">
+            <span class="gb-ticket-label-sm">Ticket No.</span>
+            <div class="gb-ticket-num">${num}</div>
+          </div>
+          <div class="gb-data-row">
+            <span class="gb-data-label">NAME</span>
+            <span class="gb-data-leader"></span>
+            <span class="gb-data-value">${escapeHtml(ticket.name).toUpperCase()}</span>
+          </div>
+          <div class="gb-ticket-msg">
+            "${escapeHtml(ticket.message)}"
+            <div class="gb-stamp-date">${formatDate(ticket.created_at)}</div>
+          </div>
+        </div>
+        <div class="gb-ticket-perf bottom"></div>
+      `;
+      return createWrapper(el, isNew);
+    }
+
+    // Placeholder ticket
+    function createPlaceholderEl(): HTMLElement {
+      const el = document.createElement('div');
+      el.className = 'gb-ticket gb-ticket-placeholder';
+      el.innerHTML = `
+        <div class="gb-ticket-perf"></div>
+        <div class="gb-ticket-content">
+          <div class="gb-ticket-num-header">
+            <span class="gb-ticket-label-sm">Ticket No.</span>
+            <div class="gb-ticket-num">001</div>
+          </div>
+          <div class="gb-data-row">
+            <span class="gb-data-label">NAME</span>
+            <span class="gb-data-leader"></span>
+            <span class="gb-data-value">YOU?</span>
+          </div>
+          <div class="gb-ticket-msg">
+            "Be the first to leave a note!"
+          </div>
+        </div>
+        <div class="gb-ticket-perf bottom"></div>
+      `;
+      return createWrapper(el);
+    }
+
+    // Chalkboard promo
+    function createChalkboardEl(promo: any): HTMLElement {
+      const el = document.createElement('div');
+      el.className = 'gb-chalkboard';
+      el.innerHTML = `
+        <div class="gb-chalk-header">${escapeHtml(promo.title)}</div>
+        <div class="gb-chalk-text">${escapeHtml(promo.content)}</div>
+        <div class="gb-chalk-footer">${escapeHtml(promo.badge || '')}</div>
+      `;
+      return createWrapper(el);
+    }
+
+    // Coupon promo
+    function createCouponEl(promo: any): HTMLElement {
+      const el = document.createElement('div');
+      el.className = 'gb-coupon';
+      el.innerHTML = `
+        <div class="gb-coupon-scissor">&zwj;</div>
+        <div class="gb-coupon-cutline"></div>
+        <div class="gb-coupon-title">${escapeHtml(promo.title)}</div>
+        <div class="gb-coupon-desc">${escapeHtml(promo.content)}</div>
+        ${promo.code ? `<div class="gb-coupon-code">CODE: ${escapeHtml(promo.code)}</div>` : ''}
+        <div class="gb-barcode"></div>
+        <div class="gb-barcode-num">${escapeHtml(promo.detail || '8 675309 0042 1')}</div>
+      `;
+      return createWrapper(el);
+    }
+
+    function createPromoEl(promo: any): HTMLElement {
+      return promo.type === 'chalkboard' ? createChalkboardEl(promo) : createCouponEl(promo);
+    }
+
+    function updateNowServing(num: number) {
+      const str = String(num).padStart(3, '0');
+      if (nowServingEl) nowServingEl.textContent = str;
+      if (dispenserNumEl) dispenserNumEl.textContent = String(num + 1).padStart(3, '0');
+    }
+
+    // Insert element before sentinel
+    function insertBeforeSentinel(el: HTMLElement) {
+      if (board && sentinel) {
+        board.insertBefore(el, sentinel);
+      }
+    }
+
+    // Append tickets with promo insertion
+    function appendTickets(tickets: any[]) {
+      tickets.forEach((ticket) => {
+        allTickets.push(ticket);
+        insertBeforeSentinel(createTicketEl(ticket));
+
+        // Check if we should insert a promo after this global index
+        const globalIdx = allTickets.length;
+        if (PROMO_POSITIONS.includes(globalIdx) && promoIdx < promos.length) {
+          insertBeforeSentinel(createPromoEl(promos[promoIdx++]));
+        }
+      });
+
+      // If no more tickets to load, append remaining promos
+      if (!hasMoreTickets) {
+        while (promoIdx < promos.length) {
+          insertBeforeSentinel(createPromoEl(promos[promoIdx++]));
+        }
+      }
+    }
+
+    // Initial render for empty state
+    function renderEmpty() {
+      if (!board) return;
+      // Clear everything except sentinel
+      const children = Array.from(board.children);
+      children.forEach(c => { if (c !== sentinel) c.remove(); });
+      insertBeforeSentinel(createPlaceholderEl());
+      promos.forEach((p: any) => insertBeforeSentinel(createPromoEl(p)));
+      promoIdx = promos.length;
+    }
+
+    function setStatus(msg: string, type: 'success' | 'error' | '') {
+      if (!statusEl) return;
+      statusEl.textContent = msg;
+      statusEl.className = `form-status ${type}`;
+    }
+
+    function isRateLimited(): boolean {
+      const last = localStorage.getItem('kiwi-last-ticket');
+      if (!last) return false;
+      return Date.now() - parseInt(last, 10) < RATE_LIMIT_MS;
+    }
+
+    // Char counter
+    const textarea = form?.querySelector('textarea');
+    textarea?.addEventListener('input', () => {
+      if (charCountEl) charCountEl.textContent = String(textarea.value.length);
+    });
+
+    // Skip Supabase if not configured
+    if (!SUPABASE_URL || !SUPABASE_KEY || SUPABASE_URL.includes('YOUR_PROJECT')) {
+      renderEmpty();
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        setStatus('Kitchen is closed — backend not configured yet!', 'error');
+      });
+      return;
+    }
+
+    // Dynamic Supabase mode
+    let supabase: any = null;
+    let sentinelObserver: IntersectionObserver | null = null;
+
+    async function initSupabase() {
+      const { createClient } = await import('@supabase/supabase-js');
+      supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
+    async function loadTickets(cursor?: number) {
+      if (!supabase || isLoadingMore) return;
+      isLoadingMore = true;
+
+      // Show loading indicator
+      let loadingEl: HTMLElement | null = null;
+      if (cursor) {
+        loadingEl = document.createElement('div');
+        loadingEl.className = 'gb-loading-more';
+        loadingEl.textContent = 'LOADING...';
+        insertBeforeSentinel(loadingEl);
+      }
+
+      try {
+        let query = supabase
+          .from('guestbook_tickets')
+          .select('*')
+          .eq('approved', true)
+          .order('ticket_number', { ascending: false })
+          .limit(PAGE_SIZE);
+
+        if (cursor) {
+          query = query.lt('ticket_number', cursor);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        const tickets = data || [];
+        hasMoreTickets = tickets.length === PAGE_SIZE;
+
+        if (tickets.length > 0) {
+          lastTicketNumber = tickets[tickets.length - 1].ticket_number;
+        }
+
+        // Remove loading indicator
+        if (loadingEl) loadingEl.remove();
+
+        if (!cursor) {
+          // First load
+          if (tickets.length === 0) {
+            renderEmpty();
+          } else {
+            updateNowServing(tickets[0].ticket_number);
+            appendTickets(tickets);
+            startSentinelObserver();
+          }
+        } else {
+          // Subsequent loads
+          appendTickets(tickets);
+        }
+      } catch (err) {
+        console.error('Failed to load tickets:', err);
+        if (loadingEl) loadingEl.remove();
+      } finally {
+        isLoadingMore = false;
+      }
+    }
+
+    function startSentinelObserver() {
+      if (!sentinel || !board) return;
+      const trackEl = document.querySelector('.gb-tickets-track');
+      sentinelObserver = new IntersectionObserver((entries) => {
+        if (entries[0]?.isIntersecting && !isLoadingMore && hasMoreTickets && lastTicketNumber) {
+          loadTickets(lastTicketNumber);
+        }
+      }, { root: trackEl, rootMargin: '0px 400px 0px 0px' });
+      sentinelObserver.observe(sentinel);
+    }
+
+    // Load on scroll into view
+    const gbSection = document.getElementById('guestbook');
+    if (gbSection) {
+      let gbLoaded = false;
+      const gbObserver = new IntersectionObserver(async (entries) => {
+        if (entries[0]?.isIntersecting && !gbLoaded) {
+          gbLoaded = true;
+          await initSupabase();
+          await loadTickets();
+          gbObserver.disconnect();
+          // Start auto-scroll now that tickets are rendered
+          window.dispatchEvent(new CustomEvent('guestbook-loaded'));
+        }
+      }, { threshold: 0.1 });
+      gbObserver.observe(gbSection);
+    }
+
+    // Form submission
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!supabase) {
+        setStatus('Still loading, try again...', 'error');
+        return;
+      }
+
+      const formData = new FormData(form);
+      const name = (formData.get('name') as string || '').trim();
+      const message = (formData.get('message') as string || '').trim();
+
+      if (!name || !message) {
+        setStatus('Please fill in both fields', 'error');
+        return;
+      }
+
+      if (name.length > 30 || message.length > 200) {
+        setStatus('Name or message too long', 'error');
+        return;
+      }
+
+      if (containsProfanity(name) || containsProfanity(message)) {
+        setStatus('Keep it friendly, please!', 'error');
+        return;
+      }
+
+      if (isRateLimited()) {
+        setStatus('One ticket per 5 minutes — come back soon!', 'error');
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+      setStatus('Printing your ticket...', '');
+
+      try {
+        const { data, error } = await supabase
+          .from('guestbook_tickets')
+          .insert({ name, message })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        localStorage.setItem('kiwi-last-ticket', String(Date.now()));
+        setStatus('Order submitted! Your ticket is on the rail.', 'success');
+        form.reset();
+        if (charCountEl) charCountEl.textContent = '0';
+
+        if (board && data) {
+          // Remove placeholder if exists
+          board.querySelector('.gb-ticket-placeholder')?.closest('.gb-ticket-wrapper')?.remove();
+          const ticketEl = createTicketEl(data, true);
+          const firstWrapper = board.querySelector('.gb-ticket-wrapper');
+          if (firstWrapper) {
+            board.insertBefore(ticketEl, firstWrapper);
+          } else {
+            insertBeforeSentinel(ticketEl);
+          }
+          allTickets.unshift(data);
+          updateNowServing(data.ticket_number);
+
+          // Start sentinel observer if this is the first ticket
+          if (!sentinelObserver) startSentinelObserver();
+        }
+      } catch (err) {
+        console.error('Failed to submit ticket:', err);
+        setStatus('Something went wrong — try again!', 'error');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    // Auto-scroll the ticket rack when guestbook is in view
+    const trackEl2 = document.querySelector('.gb-tickets-track') as HTMLElement | null;
+    if (trackEl2 && gbSection) {
+      let autoScrollId: number | null = null;
+      let userInteracted = false;
+      let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
+      const SPEED = 0.5; // px per frame
+
+      let scrollAccumulator = 0;
+
+      function startAutoScroll() {
+        if (autoScrollId) return;
+        scrollAccumulator = 0;
+        autoScrollId = requestAnimationFrame(function tick() {
+          if (!trackEl2 || userInteracted) {
+            autoScrollId = null;
+            return;
+          }
+          scrollAccumulator += SPEED;
+          if (scrollAccumulator >= 1) {
+            const px = Math.floor(scrollAccumulator);
+            trackEl2.scrollLeft += px;
+            scrollAccumulator -= px;
+          }
+          // Stop if near the end
+          if (trackEl2.scrollLeft >= trackEl2.scrollWidth - trackEl2.clientWidth - 2) {
+            autoScrollId = null;
+            return;
+          }
+          autoScrollId = requestAnimationFrame(tick);
+        });
+      }
+
+      function stopAutoScroll() {
+        if (autoScrollId) {
+          cancelAnimationFrame(autoScrollId);
+          autoScrollId = null;
+        }
+      }
+
+      function pauseAndResume() {
+        userInteracted = true;
+        stopAutoScroll();
+        if (resumeTimeout) clearTimeout(resumeTimeout);
+        resumeTimeout = setTimeout(() => {
+          userInteracted = false;
+          startAutoScroll();
+        }, 4000); // resume after 4s of no interaction
+      }
+
+      // Pause on user interaction
+      trackEl2.addEventListener('pointerdown', pauseAndResume);
+      trackEl2.addEventListener('wheel', pauseAndResume, { passive: true });
+      trackEl2.addEventListener('touchstart', pauseAndResume, { passive: true });
+
+      // Start/stop based on visibility, but only after tickets are loaded
+      let ticketsLoaded = false;
+
+      function setupVisibilityObserver() {
+        const scrollObserver = new IntersectionObserver((entries) => {
+          if (entries[0]?.isIntersecting) {
+            if (!userInteracted) startAutoScroll();
+          } else {
+            stopAutoScroll();
+          }
+        }, { threshold: 0.2 });
+        scrollObserver.observe(gbSection!);
+      }
+
+      window.addEventListener('guestbook-loaded', () => {
+        ticketsLoaded = true;
+        setupVisibilityObserver();
+        // Start immediately if already in view
+        if (!userInteracted) startAutoScroll();
+      });
+    }
+  })();
+
+  // ===== MOBILE SHELF SWIPE CAROUSEL =====
+  (() => {
+    const shelf = document.getElementById('mobile-shelf');
+    const dots = document.querySelectorAll('.shelf-dot');
+    const priceTag = shelf?.closest('.shelf-mobile')?.querySelector('.mobile-price-tag');
+    if (!shelf || !priceTag) return;
+
+    const messages = [
+      'PRICED TO HIRE: $0.00',
+      'OFFLINE AI POWERED',
+      'OPEN SOURCE FREE',
+      'HACKATHON WINNER',
+      'PREMIUM QUALITY',
+    ];
+
+    let currentIndex = 0;
+
+    function updateCarousel() {
+      const pouches = shelf.querySelectorAll('.pouch');
+      if (!pouches.length) return;
+
+      const scrollLeft = shelf.scrollLeft;
+      const cardWidth = pouches[0].offsetWidth + 16; // gap
+      const newIndex = Math.round(scrollLeft / cardWidth);
+      const clampedIndex = Math.max(0, Math.min(newIndex, pouches.length - 1));
+
+      if (clampedIndex !== currentIndex) {
+        currentIndex = clampedIndex;
+        priceTag.textContent = messages[currentIndex] || messages[0];
+        dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+      }
+    }
+
+    shelf.addEventListener('scroll', updateCarousel, { passive: true });
+
+    // Dot click to scroll
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.dataset.index, 10);
+        const pouches = shelf.querySelectorAll('.pouch');
+        if (!pouches[idx]) return;
+        const cardWidth = pouches[0].offsetWidth + 16;
+        shelf.scrollTo({ left: cardWidth * idx, behavior: 'smooth' });
+      });
+    });
   })();
 
 </script>

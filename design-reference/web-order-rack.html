@@ -1,0 +1,911 @@
+<html lang="en" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Deli Guestbook</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&amp;family=Fredoka:wght@400;600;700&amp;family=Inter:wght@400;600;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,700;1,700&amp;family=Titan+One&amp;display=swap" rel="stylesheet" vid="7">
+    
+    
+
+    <style vid="8">
+        :root {
+            --font-logo: 'Titan One', cursive;
+            --font-display: 'Fredoka', sans-serif;
+            --font-data: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-script: 'Caveat', cursive; 
+
+            --bg-color: #E87A35; 
+            --pouch-bg: #F4EBE1; 
+            --kiwi-main: #6CA632; 
+            --seed-black: #2A1F1A; 
+            --accent-yellow: #F2C12E; 
+            --ink-red: #d32f2f; 
+            
+            
+            --paper-shadow: 0 8px 16px rgba(42, 31, 26, 0.15), 0 2px 4px rgba(42, 31, 26, 0.1);
+            --metal-light: #e0e0e0;
+            --metal-mid: #a0a0a0;
+            --metal-dark: #707070;
+            
+            --env-bg: #BAC2B1; 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--env-bg);
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.05) 100%);
+            color: var(--seed-black);
+            font-family: var(--font-data);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        
+        .deli-sign {
+            background-color: var(--bg-color);
+            color: var(--pouch-bg);
+            padding: 1rem 3rem;
+            border: 6px solid var(--seed-black);
+            box-shadow: 
+                inset 0 0 0 4px var(--bg-color),
+                inset 0 0 0 6px var(--pouch-bg),
+                6px 6px 0px rgba(0,0,0,0.15);
+            text-align: center;
+            transform: rotate(-1deg);
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .deli-sign h2 {
+            font-family: var(--font-logo);
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px var(--seed-black);
+            margin: 0;
+            line-height: 1;
+        }
+
+        .deli-sign .subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+
+        
+        .control-desk {
+            display: grid;
+            grid-template-columns: auto auto 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 4rem;
+            align-items: end;
+        }
+
+        
+        .dispenser {
+            width: 120px;
+            height: 180px;
+            background: linear-gradient(135deg, #e53935, var(--ink-red), #b71c1c);
+            border-radius: 60px 60px 10px 10px;
+            position: relative;
+            box-shadow: 
+                inset -5px -5px 15px rgba(0,0,0,0.3),
+                inset 5px 5px 15px rgba(255,255,255,0.3),
+                5px 10px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #8e0000;
+        }
+
+        .dispenser-cap {
+            width: 80px;
+            height: 30px;
+            background: #111;
+            border-radius: 20px 20px 0 0;
+            margin-top: -10px;
+        }
+
+        .dispenser-label {
+            color: white;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 2rem;
+            letter-spacing: 1px;
+            transform: rotate(-90deg);
+            position: absolute;
+            left: -20px;
+            top: 70px;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+        }
+
+        .dispenser-slot {
+            width: 60px;
+            height: 10px;
+            background: #1a1a1a;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.8);
+            z-index: 2;
+        }
+
+        .dispenser-ticket-stub {
+            width: 46px;
+            height: 40px;
+            background: var(--pouch-bg);
+            position: absolute;
+            bottom: -15px;
+            border-radius: 0 0 5px 5px;
+            border: 1px solid #ccc;
+            border-top: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 5px;
+            color: var(--ink-red);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.2rem;
+            transform-origin: top;
+            transform: rotateX(20deg);
+        }
+
+        
+        .led-panel {
+            background-color: #111;
+            border: 8px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            box-shadow: 
+                inset 0 0 20px rgba(0,0,0,0.8),
+                0 10px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .led-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .led-label {
+            color: #666;
+            font-family: var(--font-data);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .led-text {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-style: italic;
+            font-size: 3rem;
+            color: #ff2a2a;
+            text-shadow: 
+                0 0 5px #ff2a2a,
+                0 0 15px #ff2a2a,
+                0 0 30px rgba(255, 42, 42, 0.5);
+            line-height: 1;
+            letter-spacing: 4px;
+        }
+
+        .led-text span {
+            color: #4a0f0f; 
+            text-shadow: none;
+        }
+
+        
+        .order-form-wrapper {
+            justify-self: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .order-form {
+            background-color: var(--pouch-bg);
+            border: 4px solid var(--seed-black);
+            padding: 4px;
+            position: relative;
+            box-shadow: var(--paper-shadow);
+            transform: rotate(1deg);
+        }
+
+        .order-form-inner {
+            border: 2px solid var(--seed-black);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-header {
+            background-color: var(--ink-red);
+            color: var(--pouch-bg);
+            text-align: center;
+            padding: 0.5rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin: -1.5rem -1.5rem 1rem -1.5rem;
+            border-bottom: 2px solid var(--seed-black);
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .form-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--seed-black);
+        }
+
+        .form-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px dotted var(--seed-black);
+            font-family: var(--font-script);
+            font-size: 1.5rem;
+            color: var(--ink-red);
+            padding: 0.2rem 0;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: rgba(42, 31, 26, 0.3);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        .submit-btn {
+            background: transparent;
+            border: 3px solid var(--ink-red);
+            color: var(--ink-red);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            padding: 0.8rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transform: rotate(-2deg);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.15"/></svg>');
+            pointer-events: none;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--ink-red);
+            color: var(--pouch-bg);
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        
+        .rack-system {
+            width: 100vw;
+            position: relative;
+            margin-top: 2rem;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .metal-rail-container {
+            width: 100%;
+            height: 40px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .metal-rail {
+            width: 110%; 
+            height: 16px;
+            background: linear-gradient(to bottom, #f5f5f5 0%, #d0d0d0 30%, #a0a0a0 70%, #606060 100%);
+            border-top: 1px solid #fff;
+            border-bottom: 2px solid #333;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .rail-bracket {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            background: linear-gradient(to right, #888, #ccc, #888);
+            border: 2px solid #444;
+            border-radius: 4px;
+            top: -5px;
+            box-shadow: 3px 5px 10px rgba(0,0,0,0.4);
+        }
+
+        .rail-bracket.left { left: 10%; }
+        .rail-bracket.right { right: 10%; }
+        
+        .rail-bracket::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: #222;
+            border-radius: 50%;
+            top: 8px; left: 9px;
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5);
+        }
+
+        
+        .tickets-track {
+            display: flex;
+            gap: 2rem;
+            padding: 0 4rem 4rem 4rem;
+            margin-top: -16px; 
+            width: 100%;
+            overflow-x: auto;
+            align-items: flex-start;
+            perspective: 1000px;
+            
+            
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tickets-track::-webkit-scrollbar { display: none; }
+
+        
+        .ticket-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            transform-origin: top center;
+            animation: sway 6s ease-in-out infinite alternate;
+        }
+
+        
+        .ticket-wrapper:nth-child(2n) { animation-duration: 7.5s; animation-delay: -2s; }
+        .ticket-wrapper:nth-child(3n) { animation-duration: 5.2s; animation-delay: -4s; }
+        .ticket-wrapper:nth-child(4n) { animation-duration: 8.1s; animation-delay: -1s; }
+
+        @keyframes sway {
+            0% { transform: rotate(-2deg); }
+            100% { transform: rotate(2deg); }
+        }
+
+        .metal-clip {
+            width: 20px;
+            height: 35px;
+            background: linear-gradient(to right, #999, #eee, #999);
+            border: 1px solid #555;
+            border-radius: 2px;
+            position: relative;
+            z-index: 5;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            margin-bottom: -15px;
+        }
+        
+        
+        .metal-clip::before {
+            content: '';
+            position: absolute;
+            top: -15px; left: 2px;
+            width: 14px; height: 20px;
+            border: 3px solid #777;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+
+        
+        .ticket {
+            width: 260px;
+            background-color: var(--pouch-bg);
+            box-shadow: var(--paper-shadow);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #dcd3c8;
+        }
+
+        
+        .ticket-perforated {
+            height: 10px;
+            width: 100%;
+            background-image: radial-gradient(circle at 5px 0px, transparent 4px, var(--pouch-bg) 5px);
+            background-size: 10px 10px;
+            background-position: bottom;
+            border-bottom: 2px dashed #ccc;
+        }
+        .ticket-perforated.bottom {
+            background-image: radial-gradient(circle at 5px 10px, transparent 4px, var(--pouch-bg) 5px);
+            background-position: top;
+            border-bottom: none;
+            border-top: 2px dashed #ccc;
+        }
+
+        .ticket-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ticket-num-header {
+            text-align: center;
+            border-bottom: 2px solid var(--seed-black);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-num {
+            font-family: var(--font-display);
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--ink-red);
+            line-height: 0.8;
+            letter-spacing: -2px;
+        }
+
+        .ticket-label-sm {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        
+        .data-row {
+            display: flex;
+            align-items: baseline;
+            width: 100%;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--seed-black);
+        }
+
+        .data-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-right: 4px;
+        }
+
+        .data-leader {
+            flex-grow: 1;
+            border-bottom: 2px dotted #aaa;
+            margin: 0 4px;
+            position: relative;
+            top: -4px;
+        }
+
+        .data-value {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--ink-red);
+        }
+
+        .ticket-msg {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--seed-black);
+            padding: 1rem;
+            border: 2px solid var(--seed-black);
+            background-color: rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        
+        .stamp-date {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #1e3a8a; 
+            border: 2px solid #1e3a8a;
+            padding: 2px 6px;
+            transform: rotate(-15deg);
+            opacity: 0.8;
+            border-radius: 2px;
+            background: var(--pouch-bg);
+        }
+
+        .serve-icon {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .serve-icon svg {
+            width: 40px;
+            fill: var(--seed-black);
+            opacity: 0.6;
+        }
+
+        
+        .chalkboard {
+            width: 280px;
+            background-color: #2d4a22; 
+            color: #f0f4f0;
+            box-shadow: var(--paper-shadow);
+            padding: 1.5rem;
+            border: 4px solid #1a2b13;
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.08"/></svg>');
+        }
+
+        .chalkboard::after {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 2px dashed rgba(255,255,255,0.4);
+            pointer-events: none;
+        }
+
+        .chalk-header {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: #f2a65a;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .chalk-text {
+            font-family: var(--font-script);
+            font-size: 2rem;
+            line-height: 1.2;
+            transform: rotate(-2deg);
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .chalk-footer {
+            margin-top: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        
+        .coupon {
+            width: 240px;
+            background-color: #ffffff;
+            box-shadow: var(--paper-shadow);
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .coupon-cutline {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 0;
+            border-top: 2px dashed #999;
+            margin-top: 15px;
+            z-index: 1;
+        }
+
+        .scissor-icon {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            background: #fff;
+            padding: 0 4px;
+            z-index: 2;
+            font-size: 1.2rem;
+        }
+
+        .coupon-header {
+            font-family: var(--font-logo);
+            font-size: 1.8rem;
+            color: var(--ink-red);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .coupon-desc {
+            font-family: var(--font-data);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border-top: 2px solid var(--seed-black);
+            border-bottom: 2px solid var(--seed-black);
+            padding: 0.5rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .barcode {
+            height: 50px;
+            width: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #000,
+                #000 2px,
+                transparent 2px,
+                transparent 4px,
+                #000 4px,
+                #000 5px,
+                transparent 5px,
+                transparent 8px,
+                #000 8px,
+                #000 12px,
+                transparent 12px,
+                transparent 14px
+            );
+            margin-bottom: 0.5rem;
+        }
+
+        .barcode-num {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+        }
+
+        
+        .typography-accent-script {
+            font-family: var(--font-script);
+            font-size: 1.8rem;
+            color: var(--seed-black);
+            margin: -10px 0;
+            display: block;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .control-desk {
+                grid-template-columns: 1fr;
+                justify-items: center;
+                gap: 3rem;
+            }
+            .dispenser {
+                display: none; 
+            }
+        }
+    </style>
+</head>
+<body vid="9">
+
+    
+    <div class="deli-sign" vid="10">
+        <h2 vid="11">방명록</h2>
+        <div class="subtitle" vid="12">GUESTBOOK</div>
+    </div>
+
+    
+    <div class="control-desk" vid="13">
+        
+        
+        <div class="dispenser" vid="14">
+            <div class="dispenser-cap" vid="15"></div>
+            <div class="dispenser-label" vid="16">TAKE A NUMBER</div>
+            <div class="dispenser-slot" vid="17"></div>
+            <div class="dispenser-ticket-stub" vid="18">043</div>
+        </div>
+
+        
+        <div class="led-panel" vid="19">
+            <div class="led-label" vid="20">Now Serving</div>
+            <div class="led-text" vid="21">042</div>
+        </div>
+
+        
+        <div class="order-form-wrapper" vid="22">
+            <div class="order-form" vid="23">
+                <div class="order-form-inner" vid="24">
+                    <div class="form-header" vid="25">
+                        TAKE A NUMBER / 번호표 뽑기
+                    </div>
+                    
+                    <div class="form-row" vid="26">
+                        <label class="form-label" vid="27">Name / 손님</label>
+                        <input type="text" class="form-input" placeholder="Write your name here..." vid="28">
+                    </div>
+                    
+                    <div class="form-row" style="margin-top: 0.5rem;" vid="29">
+                        <label class="form-label" vid="30">Message / 주문내용</label>
+                        <textarea class="form-input" rows="2" placeholder="Leave a message for the deli..." style="resize: none;" vid="31"></textarea>
+                    </div>
+
+                    <button class="submit-btn" vid="32">Submit Order →</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class="rack-system" vid="33">
+        
+        <div class="metal-rail-container" vid="34">
+            <div class="metal-rail" vid="35">
+                <div class="rail-bracket left" vid="36"></div>
+                <div class="rail-bracket right" vid="37"></div>
+            </div>
+        </div>
+
+        <div class="tickets-track" vid="38">
+            
+            
+            <div class="ticket-wrapper" vid="39">
+                <div class="metal-clip" vid="40"></div>
+                <div class="ticket" vid="41">
+                    <div class="ticket-perforated" vid="42"></div>
+                    <div class="ticket-content" vid="43">
+                        <div class="ticket-num-header" vid="44">
+                            <span class="ticket-label-sm" vid="45">Ticket No.</span>
+                            <div class="ticket-num" vid="46">040</div>
+                        </div>
+                        
+                        <div class="data-row" vid="47">
+                            <span class="data-label" vid="48">NAME</span>
+                            <span class="data-leader" vid="49"></span>
+                            <span class="data-value" vid="50">MINSOO K.</span>
+                        </div>
+                        
+                        <span class="typography-accent-script" vid="51">Ordered</span>
+                        
+                        <div class="ticket-msg" vid="52">
+                            "Love the fresh produce selection! The layout makes it so easy to find what I need. Keep up the great work."
+                            <div class="stamp-date" vid="53">OCT 24</div>
+                        </div>
+                    </div>
+                    <div class="ticket-perforated bottom" vid="54"></div>
+                </div>
+            </div>
+
+            
+            <div class="ticket-wrapper" style="margin-top: 10px;" vid="55">
+                <div class="metal-clip" vid="56"></div>
+                <div class="chalkboard" vid="57">
+                    <div class="chalk-header" vid="58">Today's Special</div>
+                    <div class="chalk-text" vid="59">
+                        Welcome to<br vid="60">Kyuhee's Deli!
+                    </div>
+                    <div style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 1rem;" vid="61">
+                        <span style="font-family: var(--font-data); font-size: 0.9rem; font-weight: 600;" vid="62">LEAVE A NOTE</span><br vid="63">
+                        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #aaa;" vid="64">&amp; GET 10% OFF</span>
+                    </div>
+                    <div class="chalk-footer" vid="65">Owner Promos</div>
+                </div>
+            </div>
+
+            
+            <div class="ticket-wrapper" vid="66">
+                <div class="metal-clip" vid="67"></div>
+                <div class="ticket" vid="68">
+                    <div class="ticket-perforated" vid="69"></div>
+                    <div class="ticket-content" vid="70">
+                        <div class="ticket-num-header" vid="71">
+                            <span class="ticket-label-sm" vid="72">Ticket No.</span>
+                            <div class="ticket-num" vid="73">041</div>
+                        </div>
+                        
+                        <div class="data-row" vid="74">
+                            <span class="data-label" vid="75">NAME</span>
+                            <span class="data-leader" vid="76"></span>
+                            <span class="data-value" vid="77">ALEX J.</span>
+                        </div>
+                        
+                        <div class="serve-icon" vid="78">
+                            
+                            <svg viewBox="0 0 100 40" vid="79">
+                                <path d="M10,20 Q50,0 90,20 Q95,25 90,30 Q50,40 10,30 Q5,25 10,20 Z" fill="none" stroke="var(--seed-black)" stroke-width="2" vid="80"></path>
+                                <path d="M15,25 Q50,15 85,25" fill="none" stroke="var(--seed-black)" stroke-width="2" stroke-dasharray="2 2" vid="81"></path>
+                            </svg>
+                        </div>
+                        
+                        <div class="ticket-msg" vid="82">
+                            "The UI design here is incredibly tasty. 5 stars."
+                            <div class="stamp-date" vid="83">OCT 24</div>
+                        </div>
+                    </div>
+                    <div class="ticket-perforated bottom" vid="84"></div>
+                </div>
+            </div>
+
+            
+            <div class="ticket-wrapper" style="margin-top: 5px;" vid="85">
+                <div class="metal-clip" vid="86"></div>
+                <div class="coupon" vid="87">
+                    <div class="scissor-icon" vid="88">✂️</div>
+                    <div class="coupon-cutline" vid="89"></div>
+                    <div class="coupon-header" vid="90">CLIP &amp; SAVE</div>
+                    <div class="coupon-desc" vid="91">Valid for one free smile at checkout</div>
+                    <div class="barcode" vid="92"></div>
+                    <div class="barcode-num" vid="93">8 675309 0042 1</div>
+                </div>
+            </div>
+
+            
+            <div class="ticket-wrapper" vid="94">
+                <div class="metal-clip" vid="95"></div>
+                <div class="ticket" style="border-color: var(--ink-red); box-shadow: 0 0 0 2px var(--ink-red), var(--paper-shadow);" vid="96">
+                    <div class="ticket-perforated" vid="97"></div>
+                    <div class="ticket-content" vid="98">
+                        <div class="ticket-num-header" vid="99">
+                            <span class="ticket-label-sm" style="color: var(--ink-red); font-weight: bold;" vid="100">NOW SERVING</span>
+                            <div class="ticket-num" vid="101">042</div>
+                        </div>
+                        
+                        <div class="data-row" vid="102">
+                            <span class="data-label" vid="103">NAME</span>
+                            <span class="data-leader" vid="104"></span>
+                            <span class="data-value" vid="105">SARAH T.</span>
+                        </div>
+                        
+                        <span class="typography-accent-script" vid="106">Ordered</span>
+                        
+                        <div class="ticket-msg" vid="107">
+                            "This portfolio site feels like stepping into a real neighborhood market. Brilliant concept."
+                            <div class="stamp-date" vid="108">JUST NOW</div>
+                        </div>
+                    </div>
+                    <div class="ticket-perforated bottom" vid="109"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body></html>
