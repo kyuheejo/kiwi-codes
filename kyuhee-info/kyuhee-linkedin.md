@@ -4,7 +4,7 @@ Here's the information from your LinkedIn profile in markdown:
 
 # Kyuhee Jo
 
-**GTM @ Trillion Labs | ex-McKinsey, Google, Palantir**
+**ex-McKinsey, Google, Palantir**
 📍 United States | 500+ connections
 
 ---
@@ -16,10 +16,6 @@ I want to spend the rest of my life building great products that could change th
 ---
 
 ## Experience
-
-**Founding GTM Lead** — *Trillion Labs* (Full-time)
-Nov 2025 – Present · 5 months
-Building AI that solves problems
 
 **Deployment Strategist** — *Palantir Technologies* (Full-time)
 Jun 2025 – Nov 2025 · 6 months

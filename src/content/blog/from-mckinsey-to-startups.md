@@ -19,6 +19,6 @@ But consulting has a fundamental tension: you're always advising, never building
 
 ## What's Next
 
-Now at Trillion Labs, I'm doing exactly that — building AI products that solve real enterprise problems. The learning curve is steeper, the stakes feel higher, and I wouldn't have it any other way.
+Now I'm doing exactly that — building AI products that solve real problems. The learning curve is steeper, the stakes feel higher, and I wouldn't have it any other way.
 
 *The best way to predict the future is to build it.*

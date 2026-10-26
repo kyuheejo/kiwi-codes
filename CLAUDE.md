@@ -3,7 +3,7 @@
 ## Owner
 
 Kyuhee Jo (조규희) — Coder, Creator, Consultant.
-Head of GTM @ Trillion Labs | ex-McKinsey, Google, Palantir, Lunit
+ex-McKinsey, Google, Palantir, Lunit
 JHU CS '23 (GPA 3.95), Minor in Entrepreneurship & Applied Math
 
 - Email: kyuhee0622@gmail.com
@@ -110,7 +110,6 @@ Tone: confident but playful. Technical depth with approachable personality. The 
 ### 3. Experience Timeline (`experience-timeline.html`)
 - Horizontal scroll layout with "serving panel" cards connected by dashed lines
 - Each card = one role, styled as nutrition label:
-  - **Trillion Labs** — Founding GTM Lead (Nov 2025–Present)
   - **Palantir** — Deployment Strategist (Jun 2025–Nov 2025)
   - **McKinsey** — Business Analyst (Apr 2023–Mar 2025)
   - **Google** — SWE Intern (May 2022–Aug 2022)
@@ -198,7 +197,6 @@ kiwi-codes/
 
 | Company | Role | Period | Location |
 |---------|------|--------|----------|
-| Trillion Labs | Founding GTM Lead | Nov 2025–Present | Korea |
 | Palantir | Deployment Strategist | Jun–Nov 2025 | — |
 | McKinsey & Company | Business Analyst | Apr 2023–Mar 2025 | SF / Seoul |
 | Google | SWE Intern | May–Aug 2022 | Sunnyvale |
